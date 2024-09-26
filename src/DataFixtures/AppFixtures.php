@@ -72,10 +72,21 @@ class AppFixtures extends Fixture
     private function getPiecesData()
     {
         // Piece data = [name, description, type, acquired date, era, arsenal index];
-        yield ['Ancient Sword', 'A sword from the medieval era', 'Sword', '2020-05-15', 'Medieval', 0];
-        yield ['Elven Bow', 'A handcrafted bow by elves', 'Bow', '2018-08-12', 'Fantasy', 1];
-        yield ['Steel Dagger', 'A sharp steel dagger', 'Dagger', '2022-03-10', 'Renaissance', 4];
-        yield ['Dragon Shield', 'A shield with a dragon emblem', 'Shield', '2021-07-19', 'Mythical', 3];
-        yield ['Battle Axe', 'A heavy battle axe used in war', 'Axe', '2019-11-23', 'Viking', 2];
+        // arsenal 0
+        yield ['Ancient Sword', 'Carried during the battle of Agincourt', 'Sword', '2020-05-15', 'Medieval', 0];
+        yield ['Iron Mace', 'A heavy iron mace used in medieval battles', 'Mace', '2020-07-21', 'Medieval', 0];
+        yield ['Morningstar', 'Used to give to your ennemies sweet dreams', 'Mace', '2022-08-21', 'Medieval', 0];
+        
+        // arsenal 1
+        yield ['Elven Bow', 'A handcrafted bow by elves (debatable)', 'Bow', '2018-08-12', 'Fantasy', 1];
+        
+        // arsenal 2
+        yield ['Battle Axe', 'A heavy battle axe used in war... and cutting fruits', 'Axe', '2019-11-23', 'Viking', 2];
+        yield ['Viking Spear', 'A spear used in Viking raids', 'Spear', '2021-02-05', 'Viking', 2];
+        
+        // arsenal 3
+        yield ['Dragon Shield', 'Hide like a coward while looking cool', 'Shield', '2021-07-19', 'Mythical', 3];
+        
+        // arsenal 4 empty
     }
 }
