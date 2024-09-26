@@ -45,5 +45,7 @@ class PieceController extends AbstractController
             array('content-type' => 'text/html')
             );
     }
+    
+    
 }
 
