@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\PieceRepository;
+use App\Entity\Piece;
 
 class PieceController extends AbstractController
 {
@@ -43,6 +44,14 @@ class PieceController extends AbstractController
             $htmlpage,
             Response::HTTP_OK,
             array('content-type' => 'text/html')
+            );
+    }   
+    
+    #[Route('/piece/{id}', name: 'piece_show', requirements: ['id' => '\d+'])]
+    public function show(Piece $piece): Response
+    {
+        return $this->render('piece/show.html.twig',
+            [ 'piece' => $piece ]
             );
     }
     

@@ -85,34 +85,11 @@ class ArsenalController extends AbstractController
      * @param Integer $id (note that the id must be an integer)
      */
     #[Route('/arsenal/{id}', name: 'arsenal_show', requirements: ['id' => '\d+'])]
-    public function show(ManagerRegistry $doctrine, $id): Response
+    public function show(Arsenal $arsenal): Response
     {
-        $arsenalRepo = $doctrine->getRepository(Arsenal::class);
-        $arsenal = $arsenalRepo->find($id);
-        
-        if (!$arsenal) {
-            throw $this->createNotFoundException('The Arsenal does not exist');
-        }
-        
-        // Generate Arsenal details
-        $res = '<h1>Arsenal Details</h1>';
-        $res .= '<h2>Description:</h2>';
-        $res .= '<p>' . htmlspecialchars($arsenal->getDescription()) . '</p>'; // Ensure safe output
-        
-        // Show associated pieces
-        if ($arsenal->getPieces()->isEmpty()) {
-            $res .= '<p>No pieces in this arsenal.</p>';
-        } else {
-            $res .= '<h2>Pieces:</h2><ul>';
-            foreach ($arsenal->getPieces() as $piece) {
-                $res .= '<li>' . htmlspecialchars($piece->getName()) . ' - ' . htmlspecialchars($piece->getDescription()) . '</li>';
-            }
-            $res .= '</ul>';
-        }
-        
-        $res .= '<p/><a href="' . $this->generateUrl('arsenal_list') . '">Back to Arsenal List</a>'; // Assuming you have a route for the list
-        
-        return new Response('<html><body>' . $res . '</body></html>');
+        return $this->render('arsenal/show.html.twig',
+            [ 'arsenal' => $arsenal ]
+            );
     }
     
     

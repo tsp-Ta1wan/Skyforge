@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Arsenal n°{{ arsenal.id }}{% endblock %}
+
+{% block body %}
+    <h1>Arsenal</h1>
+
+       {% dump arsenal %}
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ arsenal.id }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ arsenal.description }}</td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+    <a href="{{ path('arsenal_list') }}">back to list</a>
+
+{% endblock %} {# body #} 
+
