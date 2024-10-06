@@ -26,11 +26,13 @@
     <table class="table">
         <tbody>
             <tr>
+            
                 <th>Piece name</th>
                 <th>Description</th>
                 <th>Type</th>
                 <th>Acquired Date</th>
                 <th>Era</th>
+                <th>Index</th>
             </tr>
             {% for piece in arsenal.pieces %}
             <tr>
@@ -39,10 +41,12 @@
                 <td>{{ piece.type }}</td>
                 <td>{{ piece.acquired|date('Y-m-d') }}</td>
                 <td>{{ piece.era }}</td>
+                <td><a href="{{ path('piece_show', {'id': piece.id}) }}">{{ piece.id }}</a></td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+   
 
 {% endblock %} {# body #}
 
