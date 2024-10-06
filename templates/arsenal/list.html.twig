@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Arsenal List{% endblock %}
+
+{% block body %}
+<style>
+        
+        th, td {
+            text-align: left;
+            padding-right: 20px; /* Adds space between columns */
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+        th {
+            font-weight: bold;
+        }
+    </style>
+    {% dump arsenals %}
+    <h1>Arsenal list</h1>
+    <h3>browse through arsenals below</h3>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Index</th>
+            	<th>Description</th>
+            </tr>
+            {% for arsenal in arsenals %}
+            <tr>
+            
+                <td><a href="{{ path('arsenal_show', {'id': arsenal.id}) }}">{{ arsenal.id }}</a></td>
+                <td><a href="{{ path('arsenal_show', {'id': arsenal.id}) }}">{{ arsenal.description }}</td>
+                
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %} {# body #}
+

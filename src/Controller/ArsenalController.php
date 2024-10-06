@@ -23,6 +23,12 @@ class ArsenalController extends AbstractController
     #[Route('/arsenal/list', name: 'arsenal_list', methods: ['GET'])]
     public function listAction(ArsenalRepository $ArsRepository)
     {
+        $arsenals = $ArsRepository->findAll();
+        
+        return $this->render('arsenal/list.html.twig', [
+            'arsenals' => $arsenals,
+        ]);
+        /**
         $htmlpage = '
     <!DOCTYPE html>
     <html lang="en">
@@ -76,7 +82,7 @@ class ArsenalController extends AbstractController
             $htmlpage,
             Response::HTTP_OK,
             ['content-type' => 'text/html']
-            );
+            );*/
     }
     
     /**
