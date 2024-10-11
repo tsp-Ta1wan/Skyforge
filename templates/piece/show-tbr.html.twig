@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PieceController!{% endblock %}
+
+{% block body %}
+      <h1>Piece</h1>
+
+      {% dump piece %}
+
+      <table class="table">
+          <tbody>
+              <tr>
+                  <th>Id</th>
+                  <td>{{ piece.id }}</td>
+              </tr>
+              <tr>
+                {# ... #}
+              </tr>
+              <tr>
+                  <th>Piece</th>
+                  <td>
+                  <ul>
+                  <li>{{ piece.name }}</li>
+                  <li>{{ piece.description }}</li>
+                  <li>{{ piece.type }}</li>
+                  <li>{{ piece.era }}</li>
+                  <li>{{ piece.acquired ? piece.acquired|date('Y-m-d') : '' }}</li>
+                  
+                  </ul> 
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+      <a href="{{ path('arsenal_show', {'id': piece.arsenal.id}) }}">Back to Arsenal</a>
+{% endblock %} {# body #} 

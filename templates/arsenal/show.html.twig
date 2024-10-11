@@ -17,7 +17,7 @@
 	}
 	
     /*this applies only to the table not the nav*/
-    table a {
+    table a, button a {
         text-decoration: none;
         color: inherit;
         display: block; 
@@ -26,13 +26,15 @@
         padding: 2vh 0 2vh 0;
     }
     
-    a:hover{
+    table a:hover{
     	color:black;
     }
-    
+    button a:hover{
+    	color:white;
+    }
 </style>
 <h1 style="margin:15vh 0 0 5vw">Arsenal n°{{ arsenal.id }}</h1>
-<h4 style="margin:2vh 0 10vh 5vw">{{ arsenal.description }}</h4>
+<h4 style="margin:2vh 0 5vh 5vw">{{ arsenal.description }}</h4>
 
 
 <table class="table table-hover table">
@@ -70,6 +72,10 @@
     Random medieval facts
   </figcaption>
 </figure>
+
+<button type="button" class="btn btn-dark" style="margin:5vh 0 0 5vw"><a href="{{ path('arsenal_list') }}">Back to Arsenal list</a></button>
+
+
 
 {% endblock %}
 

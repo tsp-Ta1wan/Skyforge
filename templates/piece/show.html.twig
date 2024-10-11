@@ -1,35 +1,82 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PieceController!{% endblock %}
+{% block title %}Piece: {{ piece.name }}{% endblock %}
 
 {% block body %}
-      <h1>Piece</h1>
+<style>
+	table {
+		max-width: 80vw;
+		margin: 5vh 0 0 5vw;
+		font-size:1.2rem;	
+		text-align:start;
+	}
+	
+	td,th {
+	height: 8vh;
+	padding:2vh 0 0 3vw !important;
+	
+	}
+	thead th{
+		padding: 0 0 1vh 3vw!important;
+	
+	}
+	
+    /*this applies only to the table not the nav*/
+    button a {
+        text-decoration: none;
+        color: inherit;
+        display: block; 
+        width: 100%;
+        height: 100%;
+        padding: 2vh 0 2vh 0;
+    }
+    
+    table a:hover{
+    	color:black;
+    }
+    button a:hover{
+    	color:white;
+    }
+</style>
+<h1 style="margin:15vh 0 0 5vw">Piece: {{ piece.name }}</h1>
+<h4 style="margin:2vh 0 5vh 5vw">Arsenal: {{ piece.arsenal.description }}</h4>
 
-      {% dump piece %}
 
-      <table class="table">
-          <tbody>
-              <tr>
-                  <th>Id</th>
-                  <td>{{ piece.id }}</td>
-              </tr>
-              <tr>
-                {# ... #}
-              </tr>
-              <tr>
-                  <th>Piece</th>
-                  <td>
-                  <ul>
-                  <li>{{ piece.name }}</li>
-                  <li>{{ piece.description }}</li>
-                  <li>{{ piece.type }}</li>
-                  <li>{{ piece.era }}</li>
-                  <li>{{ piece.acquired ? piece.acquired|date('Y-m-d') : '' }}</li>
-                  
-                  </ul> 
-                  </td>
-              </tr>
-          </tbody>
-      </table>
-      <a href="{{ path('arsenal_show', {'id': piece.arsenal.id}) }}">Back to Arsenal</a>
-{% endblock %} {# body #} 
+<table class="table ">
+  <thead>
+    <tr>
+      <th scope="col">Property</th>
+      <th scope="col">Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Name</th>
+      <td>{{ piece.name }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Description</th>
+      <td>{{ piece.description }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Type</th>
+      <td>{{ piece.type }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Era</th>
+      <td>{{ piece.era }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Date Acquired</th>
+      <td>{{ piece.acquired ? piece.acquired|date('Y-m-d') : '' }}</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<button type="button" class="btn btn-dark" style="margin:5vh 0 0 5vw"><a href="{{ path('arsenal_show', {'id': piece.arsenal.id}) }}">Back to Arsenal</a></button>
+
+
+
+{% endblock %}
+
