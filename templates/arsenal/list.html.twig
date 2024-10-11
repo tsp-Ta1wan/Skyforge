@@ -4,39 +4,60 @@
 
 {% block body %}
 <style>
-        
-        th, td {
-            text-align: left;
-            padding-right: 20px; /* Adds space between columns */
-            padding-top: 8px;
-            padding-bottom: 8px;
-        }
-        th {
-            font-weight: bold;
-        }
-    </style>
-    {% dump arsenals %}
-    <h1>Arsenal list</h1>
-    <h3>browse through arsenals below</h3>
+	table {
+		max-width: 90vw;
+		margin-left: 5vw;
+		font-size:1.2rem;	
+	}
+	
+	td,th {
+	height: 4vh;
+	padding:0 !important;
+	}
+	
+    /*this applies only to the table not the nav*/
+    table a {
+        text-decoration: none;
+        color: inherit;
+        display: block; 
+        width: 100%;
+        height: 100%;
+        padding: 2vh 0 2vh 0;
+    }
+    
+    a:hover{
+    	color:black;
+    }
+    
+</style>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Index</th>
-            	<th>Description</th>
-            </tr>
-            {% for arsenal in arsenals %}
-            <tr>
-            
-                <td><a href="{{ path('arsenal_show', {'id': arsenal.id}) }}">{{ arsenal.id }}</a></td>
-                <td><a href="{{ path('arsenal_show', {'id': arsenal.id}) }}">{{ arsenal.description }}</td>
-                
-                
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<h1>Arsenal list</h1>
+<h3>Browse through arsenals below</h3>
 
+<table class="table table-hover table">
+  <thead class="">
+    <tr>
+      <th scope="col">Index</th>
+      <th scope="col">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for arsenal in arsenals %}
+    <tr>
+        <th scope="row">
+            <a href="{{ path('arsenal_show', {'id': arsenal.id}) }}">
+                {{ arsenal.id }}
+            </a>
+        </th>
+        <td>
+            <a href="{{ path('arsenal_show', {'id': arsenal.id}) }}">
+                {{ arsenal.description }}
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
-{% endblock %} {# body #}
+{% endblock %}
 
