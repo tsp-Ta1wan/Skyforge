@@ -4,49 +4,72 @@
 
 {% block body %}
 <style>
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 10px; /* Adds space between rows */
-        }
-        th, td {
-            text-align: left;
-            padding-right: 20px; /* Adds space between columns */
-            padding-top: 8px;
-            padding-bottom: 8px;
-        }
-        th {
-            font-weight: bold;
-        }
-    </style>
+	table {
+		max-width: 80vw;
+		margin: 5vh 0 0 5vw;
+		font-size:1.2rem;	
+		text-align:start	;
+	}
+	
+	td,th {
+	height: 4vh;
+	padding:0 0 0 3vw !important;
+	}
+	
+    /*this applies only to the table not the nav*/
+    table a {
+        text-decoration: none;
+        color: inherit;
+        display: block; 
+        width: 100%;
+        height: 100%;
+        padding: 2vh 0 2vh 0;
+    }
     
-    <h1>Arsenal {{ arsenal.id }}</h1>
-    <h3>{{ arsenal.description }}</h3>
+    a:hover{
+    	color:black;
+    }
+    
+</style>
+<h1 style="margin:15vh 0 0 5vw">Arsenal n°{{ arsenal.id }}</h1>
+<h4 style="margin:2vh 0 10vh 5vw">{{ arsenal.description }}</h4>
 
-    <table class="table">
-        <tbody>
-            <tr>
-            
-                <th>Piece name</th>
-                <th>Description</th>
-                <th>Type</th>
-                <th>Acquired Date</th>
-                <th>Era</th>
-                <th>Index</th>
-            </tr>
-            {% for piece in arsenal.pieces %}
-            <tr>
-                <td>{{ piece.name }}</td>
-                <td>{{ piece.description }}</td>
-                <td>{{ piece.type }}</td>
-                <td>{{ piece.acquired|date('Y-m-d') }}</td>
-                <td>{{ piece.era }}</td>
-                <td><a href="{{ path('piece_show', {'id': piece.id}) }}">{{ piece.id }}</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-   <a href="{{ path('arsenal_list') }}">Back to Arsenal list</a>
 
-{% endblock %} {# body #}
+<table class="table table-hover table">
+  <thead class="">
+    <tr>
+      <th scope="col">Index</th>
+      <th scope="col">Piece name</th>
+      <th scope="col">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for piece in arsenal.pieces %}
+    <tr>
+        <th scope="row">
+            <a href="{{ path('piece_show', {'id': piece.id}) }}">
+                {{ piece.id }}
+            </a>
+        </th>
+        <td>
+            <a href="{{ path('piece_show', {'id': piece.id}) }}">{{ piece.name }}</a>
+        </td>
+        <td>
+            <a href="{{ path('piece_show', {'id': piece.id}) }}">{{ piece.description }}</a>
+        </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<figure  style="margin:10vh 0 0 5vw">
+  <blockquote class="blockquote">
+    <h4>Animals could be tried and convicted for crimes, and if found guilty sentenced to death </h4>
+  </blockquote>
+  <figcaption class="blockquote-footer">
+    Random medieval facts
+  </figcaption>
+</figure>
+
+{% endblock %}
 

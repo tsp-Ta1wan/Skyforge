@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Arsenal n°{{ arsenal.id }}{% endblock %}
+
+{% block body %}
+<style>
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px; /* Adds space between rows */
+        }
+        th, td {
+            text-align: left;
+            padding-right: 20px; /* Adds space between columns */
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+        th {
+            font-weight: bold;
+        }
+    </style>
+    
+    <h1>Arsenal {{ arsenal.id }}</h1>
+    <h3>{{ arsenal.description }}</h3>
+
+    <table class="table">
+        <tbody>
+            <tr>
+            
+                <th>Piece name</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Acquired Date</th>
+                <th>Era</th>
+                <th>Index</th>
+            </tr>
+            {% for piece in arsenal.pieces %}
+            <tr>
+                <td>{{ piece.name }}</td>
+                <td>{{ piece.description }}</td>
+                <td>{{ piece.type }}</td>
+                <td>{{ piece.acquired|date('Y-m-d') }}</td>
+                <td>{{ piece.era }}</td>
+                <td><a href="{{ path('piece_show', {'id': piece.id}) }}">{{ piece.id }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+   <a href="{{ path('arsenal_list') }}">Back to Arsenal list</a>
+
+{% endblock %} {# body #}
+
