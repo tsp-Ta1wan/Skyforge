@@ -5,9 +5,10 @@
 {% block body %}
 <style>
 	table {
-		max-width: 90vw;
-		margin-left: 5vw;
+		max-width: 80vw;
+		margin: 5vh 0 0 5vw;
 		font-size:1.2rem;	
+		text-align:center;
 	}
 	
 	td,th {
@@ -30,9 +31,8 @@
     }
     
 </style>
+<h1 style="margin:10vh 0 0 5vw">Arsenals</h1>
 
-<h1>Arsenal list</h1>
-<h3>Browse through arsenals below</h3>
 
 <table class="table table-hover table">
   <thead class="">
@@ -58,6 +58,15 @@
     {% endfor %}
   </tbody>
 </table>
+
+<figure  style="margin:10vh 0 0 5vw">
+  <blockquote class="blockquote">
+    <h4>Animals could be tried and convicted for crimes, and if found guilty sentenced to death </h4>
+  </blockquote>
+  <figcaption class="blockquote-footer">
+    Random medieval facts
+  </figcaption>
+</figure>
 
 {% endblock %}
 
