@@ -9,7 +9,13 @@
 
 ## Nomenclature:
 Inventaire = arsenal 
+
 Objet = piece
 
-## Erreurs/fonctionnalités:
+## Avancement:
+Toutes les étapes du checklist sont normalement réalisée.
+Vous pouvez consulter ce lien pour le [TODO.md](https://github.com/tsp-Ta1wan/Skyforge/blob/dev/TODO.md)
+
+
+## Erreurs/fonctionnalités manquantes:
 Tous les fonctionnalités codées se compilent et marchent correctement sur mon environnement. 
