@@ -20,16 +20,14 @@ Inventaire = arsenal
 Objet = piece
 
 ## Mise en marche:
-1.
-'''
-cd skyforge
+1.  
+`cd skyforge
 
 rm -fr composer.lock symfony.lock vendor/ var/cache/
 
 symfony composer install
 
-symfony server:start
-'''
+symfony server:start`
 
 3. Sur votre navigateur ouvrez **http://localhost:8000/arsenal/list**
 
