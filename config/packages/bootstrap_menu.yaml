@@ -1,0 +1,16 @@
+bootstrap_menu:
+  menus:
+    main:
+      items:
+        arsenals:
+          label: 'Arsenals'
+          route: 'arsenal_list'
+        help:
+          label: 'Help'
+          items:
+            github:
+              label: 'Github Repository'
+              url: 'https://github.com/tsp-Ta1wan/Skyforge'
+            routes:
+              label: 'Project routes'
+              route: 'app_arsenal'  

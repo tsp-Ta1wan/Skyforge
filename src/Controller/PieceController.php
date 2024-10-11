@@ -32,8 +32,8 @@ class PieceController extends AbstractController
         <p>All weapons of war should be here</p>
         <ul>';
         
-        $tags = $PieceRepository->findAll();
-        foreach($tags as $piece) {
+        $pieces = $PieceRepository->findAll();
+        foreach($pieces as $piece) {
             $htmlpage .= '<li><b>'. $piece->getId() .'. ' . $piece->getName(). ': </b>' . $piece->getDescription()  .'</li>';
         }
         $htmlpage .= '</ul>';
