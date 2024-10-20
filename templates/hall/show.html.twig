@@ -25,7 +25,10 @@
         
           {% for piece in hall.pieces %}
         <div>
-        <a href="{{ path('piece_show',{'id' : piece.id}) }}">{{ piece.name}}</a>
+        <a href="{{ path('app_hall_piece_show',{
+                         'hall_id': hall.id,
+                         'piece_id' : piece.id
+                       }) }}">{{ piece.name}}</a>
         </div>
           {% endfor %}
         </ul>

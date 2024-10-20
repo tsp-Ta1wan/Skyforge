@@ -2,59 +2,80 @@
 
 namespace App\Controller;
 
+use App\Entity\Piece;
+use App\Form\PieceType;
+use App\Repository\PieceRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Repository\PieceRepository;
-use App\Entity\Piece;
 
-class PieceController extends AbstractController
+#[Route('/piece')]
+final class PieceController extends AbstractController
 {
-    #[Route('/piece', name: 'app_piece')]
-    public function index(): Response
+    #[Route(name: 'app_piece_index', methods: ['GET'])]
+    public function index(PieceRepository $pieceRepository): Response
     {
         return $this->render('piece/index.html.twig', [
-            'controller_name' => 'PieceController',
+            'pieces' => $pieceRepository->findAll(),
         ]);
     }
-    
-    #[Route('/piece/list', name: 'piece_list', methods: ['GET'])]
-    public function listAction(PieceRepository $PieceRepository)
+
+    #[Route('/new', name: 'app_piece_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $htmlpage = '<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Pieces!!</title>
-    </head>
-    <body>
-        <h1>Pieces list</h1>
-        <p>All weapons of war should be here</p>
-        <ul>';
-        
-        $pieces = $PieceRepository->findAll();
-        foreach($pieces as $piece) {
-            $htmlpage .= '<li><b>'. $piece->getId() .'. ' . $piece->getName(). ': </b>' . $piece->getDescription()  .'</li>';
+        $piece = new Piece();
+        $form = $this->createForm(PieceType::class, $piece);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($piece);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_piece_index', [], Response::HTTP_SEE_OTHER);
         }
-        $htmlpage .= '</ul>';
-        
-        $htmlpage .= '</body></html>';
-        
-        return new Response(
-            $htmlpage,
-            Response::HTTP_OK,
-            array('content-type' => 'text/html')
-            );
-    }   
-    
-    #[Route('/piece/{id}', name: 'piece_show', requirements: ['id' => '\d+'])]
+
+        return $this->render('piece/new.html.twig', [
+            'piece' => $piece,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_piece_show', methods: ['GET'])]
     public function show(Piece $piece): Response
     {
-        return $this->render('piece/show.html.twig',
-            [ 'piece' => $piece ]
-            );
+        return $this->render('piece/show.html.twig', [
+            'piece' => $piece,
+        ]);
     }
-    
-    
-}
 
+    #[Route('/{id}/edit', name: 'app_piece_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Piece $piece, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(PieceType::class, $piece);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_piece_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('piece/edit.html.twig', [
+            'piece' => $piece,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_piece_delete', methods: ['POST'])]
+    public function delete(Request $request, Piece $piece, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$piece->getId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($piece);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_piece_index', [], Response::HTTP_SEE_OTHER);
+    }
+}

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Hall;
+use App\Entity\Piece;
 use App\Form\HallType;
 use App\Repository\HallRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 
 #[Route('/hall')]
 final class HallController extends AbstractController
@@ -78,4 +80,26 @@ final class HallController extends AbstractController
 
         return $this->redirectToRoute('app_hall_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/{hall_id}/piece/{piece_id}',methods: ['GET'],name: 'app_hall_piece_show')]
+   public function pieceShow(
+       #[MapEntity(id: 'hall_id')]
+       Hall $hall,
+       #[MapEntity(id: 'piece_id')]
+       Piece $piece
+   ): Response
+   {
+    if(! $hall->getPieces()->contains($piece)) {
+                throw $this->createNotFoundException("Couldn't find such a piece in this hall!");
+        }
+
+        if(! $hall->isPublished()) {
+            throw $this->createAccessDeniedException("Thou shall not access this fine piece!");
+        }
+
+       return $this->render('hall/pieceshow.html.twig', [
+           'piece' => $piece,
+           'hall' => $hall
+       ]);
+   }
 }
