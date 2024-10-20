@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MemberRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -32,8 +34,19 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\OneToOne(inversedBy: 'member', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Arsenal $arsenal = null;
+
+    /**
+     * @var Collection<int, Hall>
+     */
+    #[ORM\OneToMany(targetEntity: Hall::class, mappedBy: 'member', orphanRemoval: true, cascade: ['persist'])]
+    private Collection $halls;
+
+    public function __construct()
+    {
+        $this->halls = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -118,6 +131,36 @@ class Member implements UserInterface, PasswordAuthenticatedUserInterface
     public function setArsenal(Arsenal $arsenal): static
     {
         $this->arsenal = $arsenal;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Hall>
+     */
+    public function getHalls(): Collection
+    {
+        return $this->halls;
+    }
+
+    public function addHall(Hall $hall): static
+    {
+        if (!$this->halls->contains($hall)) {
+            $this->halls->add($hall);
+            $hall->setMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHall(Hall $hall): static
+    {
+        if ($this->halls->removeElement($hall)) {
+            // set the owning side to null (unless already changed)
+            if ($hall->getMember() === $this) {
+                $hall->setMember(null);
+            }
+        }
 
         return $this;
     }

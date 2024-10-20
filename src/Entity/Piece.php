@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PieceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,6 +34,17 @@ class Piece
     #[ORM\ManyToOne(inversedBy: 'Pieces')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Arsenal $arsenal = null;
+
+    /**
+     * @var Collection<int, Hall>
+     */
+    #[ORM\ManyToMany(targetEntity: Hall::class, mappedBy: 'pieces')]
+    private Collection $halls;
+
+    public function __construct()
+    {
+        $this->halls = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -106,6 +119,33 @@ class Piece
     public function setArsenal(?Arsenal $arsenal): static
     {
         $this->arsenal = $arsenal;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Hall>
+     */
+    public function getHalls(): Collection
+    {
+        return $this->halls;
+    }
+
+    public function addHall(Hall $hall): static
+    {
+        if (!$this->halls->contains($hall)) {
+            $this->halls->add($hall);
+            $hall->addPiece($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHall(Hall $hall): static
+    {
+        if ($this->halls->removeElement($hall)) {
+            $hall->removePiece($this);
+        }
 
         return $this;
     }

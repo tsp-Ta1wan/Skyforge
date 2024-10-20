@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hall{% endblock %}
+
+{% block main %}
+    <h1>Hall</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ hall.id }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ hall.description }}</td>
+            </tr>
+            <tr>
+                <th>Published</th>
+                <td>{{ hall.published ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+    <th>Pieces</th>
+    <td>
+        
+          {% for piece in hall.pieces %}
+        <div>
+        <a href="{{ path('piece_show',{'id' : piece.id}) }}">{{ piece.name}}</a>
+        </div>
+          {% endfor %}
+        </ul>
+    </td>
+</tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_hall_index') }}">back to list</a>
+
+    <a href="{{ path('app_hall_edit', {'id': hall.id}) }}">edit</a>
+
+    {{ include('hall/_delete_form.html.twig') }}
+{% endblock %}
