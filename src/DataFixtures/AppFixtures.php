@@ -4,11 +4,24 @@ namespace App\DataFixtures;
 
 use App\Entity\Piece;
 use App\Entity\Arsenal;
+use App\Entity\Member;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
 
 class AppFixtures extends Fixture
 {
+
+
+    private UserPasswordHasherInterface $hasher;
+
+    public function __construct(UserPasswordHasherInterface $hasher)
+    {
+        $this->hasher = $hasher;
+    }
+
+
     public function load(ObjectManager $manager)
     {
         // Load for Arsenal
@@ -16,11 +29,31 @@ class AppFixtures extends Fixture
 
         // Load for Pieces (of war mind you)
         $this->loadPieces($manager);
+
+        $this->loadMembers($manager);
+    }
+
+    private function loadMembers(ObjectManager $manager)
+    {
+        foreach ($this->membersGenerator() as [$email, $plainPassword]) {
+            $user = new Member();
+            $password = $this->hasher->hashPassword($user, $plainPassword);
+            $user->setEmail($email);
+            $user->setPassword($password);
+
+            // $roles = array();
+            // $roles[] = $role;
+            // $user->setRoles($roles);
+
+            $manager->persist($user);
+        }
+        $manager->flush();
+
     }
 
     private function loadArsenals(ObjectManager $manager)
     {
-        foreach ($this->getArsenalsData() as [$description]) {
+        foreach ($this->ArsenalsGenerator() as [$description]) {
             $arsenal = new Arsenal();
             // if description is null (which will be soon hehe) i don't know what happens for setDescription. 
             // Description isn't nullable now we'll comment this for now
@@ -34,9 +67,9 @@ class AppFixtures extends Fixture
             //}
             $manager->persist($arsenal);
         }
-    
         // Flush
         $manager->flush();
+        
     }
 
     private function loadPieces(ObjectManager $manager)
@@ -44,7 +77,7 @@ class AppFixtures extends Fixture
         // Fetching Arsenals
         $arsenals = $manager->getRepository(Arsenal::class)->findAll();
 
-        foreach ($this->getPiecesData() as [$name, $description, $type, $acquired, $era, $arsenalIndex]) {
+        foreach ($this->PiecesGenerator() as [$name, $description, $type, $acquired, $era, $arsenalIndex]) {
             $piece = new Piece();
             $piece->setName($name)
                 ->setDescription($description)
@@ -59,7 +92,15 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
-    private function getArsenalsData()
+    private function MembersGenerator()
+{
+    yield ['viking@example.com', 'vikingpass'];
+    yield ['shieldmaster@example.com', 'shieldpass'];
+    yield ['blademaster@example.com', 'bladepass'];
+    yield ['mythicwarrior@example.com', 'mythicpass'];
+    yield ['noobmaster69@gmail.com', 'thor'];
+}
+    private function ArsenalsGenerator()
     {
         // Arsenal data (only description for now)
         yield ['Medieval Armory'];
@@ -69,7 +110,7 @@ class AppFixtures extends Fixture
         yield ['Renaissance Blades'];
     }
 
-    private function getPiecesData()
+    private function PiecesGenerator()
     {
         // Piece data = [name, description, type, acquired date, era, arsenal index];
         // arsenal 1
@@ -89,4 +130,6 @@ class AppFixtures extends Fixture
         
         // arsenal 5 empty
     }
+
+    
 }

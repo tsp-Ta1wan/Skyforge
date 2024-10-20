@@ -24,6 +24,9 @@ class Arsenal
     #[ORM\OneToMany(targetEntity: Piece::class, mappedBy: 'arsenal', orphanRemoval: true)]
     private Collection $Pieces;
 
+    #[ORM\OneToOne(mappedBy: 'arsenal', cascade: ['persist', 'remove'])]
+    private ?Member $member = null;
+
     public function __construct()
     {
         $this->Pieces = new ArrayCollection();
@@ -72,6 +75,23 @@ class Arsenal
                 $piece->setArsenal(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMember(): ?Member
+    {
+        return $this->member;
+    }
+
+    public function setMember(Member $member): static
+    {
+        // set the owning side of the relation if necessary
+        if ($member->getArsenal() !== $this) {
+            $member->setArsenal($this);
+        }
+
+        $this->member = $member;
 
         return $this;
     }
