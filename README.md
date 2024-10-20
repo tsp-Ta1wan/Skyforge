@@ -25,14 +25,14 @@ Après avoir téléchargé et extrait le rendu-CSC4101.zip suivez ces étapes en
 
 **Pour Linux/WSL Ubuntu**:
 ```
-cd rendu-CSC4101/skyforge
+cd rendu-CSC4101
 rm -fr composer.lock symfony.lock vendor/ var/cache/
 symfony composer install
 symfony server:start
 ```
 **Pour Windows**:
 ```
-cd rendu-CSC4101/skyforge
+cd rendu-CSC4101
 del /f /q composer.lock
 del /f /q symfony.lock
 rmdir /s /q vendor
