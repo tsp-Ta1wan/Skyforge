@@ -21,7 +21,7 @@ class Arsenal
     /**
      * @var Collection<int, Piece>
      */
-    #[ORM\OneToMany(targetEntity: Piece::class, mappedBy: 'arsenal', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Piece::class, mappedBy: 'arsenal', orphanRemoval: true, cascade: ['persist'])]
     private Collection $Pieces;
 
     #[ORM\OneToOne(mappedBy: 'arsenal', cascade: ['persist', 'remove'])]

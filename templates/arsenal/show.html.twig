@@ -52,15 +52,15 @@
     {% for piece in arsenal.pieces %}
     <tr>
         <th scope="row">
-            <a href="{{ path('piece_show', {'id': piece.id}) }}">
+            <a href="{{ path('app_piece_show', {'id': piece.id}) }}">
                 {{ piece.id }}
             </a>
         </th>
         <td>
-            <a href="{{ path('piece_show', {'id': piece.id}) }}">{{ piece.name }}</a>
+            <a href="{{ path('app_piece_show', {'id': piece.id}) }}">{{ piece.name }}</a>
         </td>
         <td>
-            <a href="{{ path('piece_show', {'id': piece.id}) }}">{{ piece.description }}</a>
+            <a href="{{ path('app_piece_show', {'id': piece.id}) }}">{{ piece.description }}</a>
         </td>
     </tr>
     {% endfor %}
