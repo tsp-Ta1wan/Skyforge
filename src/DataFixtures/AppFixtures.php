@@ -18,6 +18,12 @@ class AppFixtures extends Fixture
     private const MYTHICC_ARS_1 = 'mythicc-inventory-1';
     private const NOOB_ARS_1 = 'noobmaster-inventory-1';
 
+    private const THOR_ODINSSON_1 = 'thor-odinsson-1';
+    private const ELF_GUY_1 = 'elf-guy-1';
+    private const BLADE_MASTER_1 = 'blade-master-1';
+    private const MYTHICC_OLIVE_1 = 'mythicc-olive-1';
+    private const NOOB_MASTER_1 = 'noobmaster-master-1';
+
     
     private UserPasswordHasherInterface $hasher;
 
@@ -40,21 +46,24 @@ class AppFixtures extends Fixture
 
     private function loadMembers(ObjectManager $manager)
     {
-        foreach ($this->membersGenerator() as [$email, $plainPassword]) {
-            $user = new Member();
-            $password = $this->hasher->hashPassword($user, $plainPassword);
-            $user->setEmail($email);
-            $user->setPassword($password);
+        foreach (self::MembersGenerator() as [$email, $plainPassword, $memberReference]) {
+            $member = new Member();
+            $password = $this->hasher->hashPassword($member, $plainPassword);
+            $member->setEmail($email);
+            $member->setPassword($password);
 
             // $roles = array();
             // $roles[] = $role;
             // $user->setRoles($roles);
 
-            $manager->persist($user);
+            $manager->persist($member);
+            $this->addReference($memberReference, $member);
         }
         $manager->flush();
 
     }
+
+    
 
     private function loadArsenals(ObjectManager $manager)
     {
@@ -102,11 +111,11 @@ class AppFixtures extends Fixture
 
     private function MembersGenerator()
 {
-    yield ['thor.odinsson@example.com', 'vikingpass'];
-    yield ['valhalla@example.com', 'shieldpass'];
-    yield ['blademaster@example.com', 'bladepass'];
-    yield ['mythiccwarrior@example.com', 'mythicpass'];
-    yield ['noobmaster69@gmail.com', 'thorisnoob'];
+    yield ['thor.odinsson@example.com', 'vikingpass', self::THOR_ODINSSON_1];
+    yield ['valhalla@example.com', 'shieldpass', self::ELF_GUY_1];
+    yield ['blademaster@example.com', 'bladepass', self::BLADE_MASTER_1];
+    yield ['mythiccwarrior@example.com', 'mythicpass', self::MYTHICC_ARS_1];
+    yield ['noobmaster69@gmail.com', 'thorisnoob', self::NOOB_MASTER_1];
 }
     private function ArsenalsGenerator()
     {
