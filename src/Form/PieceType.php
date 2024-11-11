@@ -10,6 +10,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
+
 class PieceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -31,8 +34,10 @@ class PieceType extends AbstractType
                 'choice_label' => 'description',    
                 'expanded' => true,  
                 'multiple' => true,
-                'by_reference' => false,
+                'by_reference' => false,    
             ])
+            ->add('imageName', TextType::class,  ['disabled' => true])
+            ->add('imageFile', VichImageType::class, ['required' => false])
         ;
     }
 

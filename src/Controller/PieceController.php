@@ -32,6 +32,7 @@ final class PieceController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
             $entityManager->persist($piece);
             $entityManager->flush();
 

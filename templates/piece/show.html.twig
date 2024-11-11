@@ -8,6 +8,10 @@
     <table class="table">
         <tbody>
             <tr>
+                <th>Image</th>
+                <td><img style="height:300px;width:300px" src="{{ vich_uploader_asset(piece, 'imageFile') }}"/></td>
+            </tr>
+            <tr>
                 <th>Id</th>
                 <td>{{ piece.id }}</td>
             </tr>
@@ -39,6 +43,7 @@
                 {% endfor %}
                 </td>
             </tr>
+            
         </tbody>
     </table>
 
