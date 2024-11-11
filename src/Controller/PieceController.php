@@ -35,7 +35,7 @@ final class PieceController extends AbstractController
             $entityManager->persist($piece);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_arsenal_show',
+            return $this->redirectToRoute('arsenal_show',
                                       ['id' => $arsenal->getId()],
                                       Response::HTTP_SEE_OTHER);
         }

@@ -17,15 +17,15 @@ class HallType extends AbstractType
         $builder
             ->add('description')
             ->add('published')
-            ->add('member', EntityType::class, [
-                'class' => Member::class,
-                'choice_label' => 'id',
-            ])
+            
             ->add('pieces', EntityType::class, [
                 'class' => Piece::class,
                 'choice_label' => 'id',
                 'multiple' => true,
             ])
+            ->add('member', null, [
+                'disabled'   => true,
+        ])
         ;
     }
 

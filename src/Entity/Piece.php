@@ -46,16 +46,7 @@ class Piece
         $this->halls = new ArrayCollection();
     }
 
-    public function __toString(): string
-{
-    return sprintf(
-        'Arsenal [ID: %d, Description: %s, Member: %s, Pieces Count: %d]',
-        $this->getId(),
-        $this->getDescription() ?? 'N/A',
-        $this->getMember() ? $this->getMember()->getEmail() : 'No Member',
-        $this->getPieces()->count()
-    );
-}
+    
 
     public function getId(): ?int
     {

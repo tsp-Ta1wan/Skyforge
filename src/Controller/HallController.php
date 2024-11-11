@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Hall;
 use App\Entity\Piece;
+use App\Entity\Member;
+use App\Form\MemberType;
 use App\Form\HallType;
 use App\Repository\HallRepository;
+use App\Repository\MemberRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,10 +27,11 @@ final class HallController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_hall_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{id}', name: 'app_hall_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, Member $member): Response
     {
         $hall = new Hall();
+        $hall->setMember($member); // Set the Member
         $form = $this->createForm(HallType::class, $hall);
         $form->handleRequest($request);
 
@@ -35,7 +39,7 @@ final class HallController extends AbstractController
             $entityManager->persist($hall);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_hall_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_member_show',['id' => $member->getId()],Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('hall/new.html.twig', [
