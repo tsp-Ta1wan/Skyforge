@@ -65,7 +65,8 @@ final class HallController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_hall_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_member_show',['id' => $hall->getMember()->getId()],Response::HTTP_SEE_OTHER);
+            
         }
 
         return $this->render('hall/edit.html.twig', [
@@ -82,7 +83,8 @@ final class HallController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_hall_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_member_show',['id' => $hall->getMember()->getId()],Response::HTTP_SEE_OTHER);
+            
     }
 
     #[Route('/{hall_id}/piece/{piece_id}',methods: ['GET'],name: 'app_hall_piece_show')]
