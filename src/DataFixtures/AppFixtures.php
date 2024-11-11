@@ -113,29 +113,32 @@ class AppFixtures extends Fixture
     }
 
     private function loadPieces(ObjectManager $manager)
-    {
-        // Fetching Arsenals
-        $arsenals = $manager->getRepository(Arsenal::class)->findAll();
-
-        foreach (self::PiecesGenerator() as [$name, $description, $type, $acquired, $era, $arsenalReference]) {
-            
-            $arsenal = $this->getReference($arsenalReference);
-            
-            $piece = new Piece();
-            $piece->setName($name)
-                ->setDescription($description)
-                ->setType($type)
-                ->setAcquired(new \DateTime($acquired))
-                ->setEra($era);
-                //->setArsenal($arsenals[$arsenalReference]);  // The OneToMany relation is at play here
-            $arsenal->addPiece($piece);
-            
-            $manager->persist($arsenal);
-            echo($arsenalReference);
-        }
+{
+    foreach (self::PiecesGenerator() as [$name, $description, $type, $acquired, $era, $arsenalReference, $imageName]) {
+        $arsenal = $this->getReference($arsenalReference);
         
-        $manager->flush();
+        $piece = new Piece();
+        $piece->setName($name)
+            ->setDescription($description)
+            ->setType($type)
+            ->setAcquired(new \DateTime($acquired))
+            ->setEra($era)
+            ->setArsenal($arsenal);
+        
+        // Set the image file
+        $imagePath = __DIR__ . '/../../public/images/pieces/' . $imageName;
+        if (file_exists($imagePath)) {
+            
+            $piece->setImageName($imageName);
+        } else {
+            throw new \Exception("Image file not found: $imagePath");
+        }
+
+        $manager->persist($piece);
     }
+
+    $manager->flush();
+}
 
     private function HallsGenerator(): \Generator
 {
@@ -169,25 +172,16 @@ class AppFixtures extends Fixture
     
 
     private function PiecesGenerator()
-    {
-        // Piece data = [name, description, type, acquired date, era, arsenal index];
-        // arsenal 1
-        yield ['Ancient Sword', 'Carried during the battle of Agincourt', 'Sword', '2020-05-15', 'Medieval', self::THOR_ARS_1];
-        yield ['Iron Mace', 'A heavy iron mace used in medieval battles', 'Mace', '2020-07-21', 'Medieval', self::THOR_ARS_1];
-        yield ['Morningstar', 'Used to give to your ennemies sweet dreams', 'Mace', '2022-08-21', 'Medieval', self::THOR_ARS_1];
-        
-        // arsenal 2
-        yield ['Elven Bow', 'A handcrafted bow by elves (debatable)', 'Bow', '2018-08-12', 'Fantasy', self::ELF_ARS_1];
-        
-        // arsenal 3
-        yield ['Battle Axe', 'A heavy battle axe used in war... and cutting fruits', 'Axe', '2019-11-23', 'Viking', self::BLADE_ARS_1];
-        yield ['Viking Spear', 'A spear used in Viking raids', 'Spear', '2021-02-05', 'Viking', self::BLADE_ARS_1];
-        
-        // arsenal 4
-        yield ['Dragon Shield', 'Hide like a coward while looking cool', 'Shield', '2021-07-19', 'Mythical', self::MYTHICC_ARS_1];
-        
-        // arsenal 5 empty
-    }
+{
+    // Piece data = [name, description, type, acquired date, era, arsenal reference, image name];
+    yield ['Ancient Sword', 'Carried during the battle of Agincourt', 'Sword', '2020-05-15', 'Medieval', self::THOR_ARS_1, 'sword.jpg'];
+    yield ['Iron Mace', 'A heavy iron mace used in medieval battles', 'Mace', '2020-07-21', 'Medieval', self::THOR_ARS_1, 'mace.jpg'];
+    yield ['Morningstar', 'Used to give to your enemies sweet dreams', 'Mace', '2022-08-21', 'Medieval', self::THOR_ARS_1, 'morningstar.jpg'];
+    yield ['Elven Bow', 'A handcrafted bow by elves (debatable)', 'Bow', '2018-08-12', 'Fantasy', self::ELF_ARS_1, 'elven_bow.jpg'];
+    yield ['Battle Axe', 'A heavy battle axe used in war... and cutting fruits', 'Axe', '2019-11-23', 'Viking', self::BLADE_ARS_1, 'battle_axe.jpg'];
+    yield ['Viking Spear', 'A spear used in Viking raids', 'Spear', '2021-02-05', 'Viking', self::BLADE_ARS_1, 'viking_spear.jpg'];
+    yield ['Dragon Shield', 'Hide like a coward while looking cool', 'Shield', '2021-07-19', 'Mythical', self::MYTHICC_ARS_1, 'dragon_shield.jpg'];
+}
 
     
 
