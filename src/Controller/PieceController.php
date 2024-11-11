@@ -63,7 +63,7 @@ final class PieceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_arsenal_show', ['id' => $piece->getArsenal()->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('arsenal_show', ['id' => $piece->getArsenal()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('piece/edit.html.twig', [

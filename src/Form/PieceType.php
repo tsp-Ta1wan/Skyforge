@@ -28,8 +28,10 @@ class PieceType extends AbstractType
         ])
             ->add('halls', EntityType::class, [
                 'class' => Hall::class,
-                'choice_label' => 'id',
+                'choice_label' => 'description',    
+                'expanded' => true,  
                 'multiple' => true,
+                'by_reference' => false,
             ])
         ;
     }

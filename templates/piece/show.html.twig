@@ -31,6 +31,14 @@
                 <th>Era</th>
                 <td>{{ piece.era }}</td>
             </tr>
+            <tr>
+                <th>Halls</th>
+                <td>
+                {% for hall in piece.halls %}
+                {{hall.id}}
+                {% endfor %}
+                </td>
+            </tr>
         </tbody>
     </table>
 
