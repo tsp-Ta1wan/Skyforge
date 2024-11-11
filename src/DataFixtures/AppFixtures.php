@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Piece;
 use App\Entity\Arsenal;
 use App\Entity\Member;
+use App\Entity\Hall;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -42,15 +43,21 @@ class AppFixtures extends Fixture
         $this->loadPieces($manager);
 
         $this->loadMembers($manager);
+
+        $this->loadHalls($manager);
     }
 
     private function loadMembers(ObjectManager $manager)
     {
-        foreach (self::MembersGenerator() as [$email, $plainPassword, $memberReference]) {
+        foreach (self::MembersGenerator() as [$email, $plainPassword, $memberReference, $arsenalReference]) {
             $member = new Member();
             $password = $this->hasher->hashPassword($member, $plainPassword);
             $member->setEmail($email);
             $member->setPassword($password);
+
+            // Set arsenal reference
+            $arsenal = $this->getReference($arsenalReference);
+            $member->setArsenal($arsenal);
 
             // $roles = array();
             // $roles[] = $role;
@@ -62,6 +69,27 @@ class AppFixtures extends Fixture
         $manager->flush();
 
     }
+
+    private function loadHalls(ObjectManager $manager)
+{
+    foreach ($this->HallsGenerator() as [$description, $published, $memberReference]) {
+        // Create a new Hall entity
+        $hall = new Hall();
+        $hall->setDescription($description);
+        $hall->setPublished($published);
+        
+        // Retrieve the member associated with this hall
+        $member = $this->getReference($memberReference);
+        $hall->setMember($member);
+        
+        // Persist the hall entity
+        $manager->persist($hall);
+    }
+
+    // Flush all persisted entities to the database
+    $manager->flush();
+}
+
 
     
 
@@ -109,13 +137,25 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
-    private function MembersGenerator()
+    private function HallsGenerator(): \Generator
 {
-    yield ['thor.odinsson@example.com', 'vikingpass', self::THOR_ODINSSON_1];
-    yield ['valhalla@example.com', 'shieldpass', self::ELF_GUY_1];
-    yield ['blademaster@example.com', 'bladepass', self::BLADE_MASTER_1];
-    yield ['mythiccwarrior@example.com', 'mythicpass', self::MYTHICC_ARS_1];
-    yield ['noobmaster69@gmail.com', 'thorisnoob', self::NOOB_MASTER_1];
+    // Halls data: [description, published, member reference]
+    yield ['Thor\'s Hall of Blades', true, self::THOR_ODINSSON_1];
+    yield ['Thor\'s Hall of Axes', false, self::THOR_ODINSSON_1]; // Second hall for Thor
+    yield ['Elf\'s Ancient Armory', false, self::ELF_GUY_1];
+    yield ['Blade Master\'s Viking Hall', true, self::BLADE_MASTER_1];
+    yield ['Blade Master\'s Secret Stash', true, self::BLADE_MASTER_1]; // Second hall for Blade Master
+    yield ['Mythical Warrior\'s Sanctuary', true, self::MYTHICC_OLIVE_1];
+    yield ['Noobmaster\'s Renaissance Corner', false, self::NOOB_MASTER_1];
+}
+
+    private function MembersGenerator()
+{   
+    yield ['thor.odinsson@example.com', 'vikingpass', self::THOR_ODINSSON_1, self::THOR_ARS_1];
+    yield ['valhalla@example.com', 'shieldpass', self::ELF_GUY_1, self::ELF_ARS_1];
+    yield ['blademaster@example.com', 'bladepass', self::BLADE_MASTER_1, self::BLADE_ARS_1];
+    yield ['mythiccwarrior@example.com', 'mythicpass', self::MYTHICC_OLIVE_1, self::MYTHICC_ARS_1];
+    yield ['noobmaster69@gmail.com', 'thorisnoob', self::NOOB_MASTER_1, self::NOOB_ARS_1];
 }
     private function ArsenalsGenerator()
     {
