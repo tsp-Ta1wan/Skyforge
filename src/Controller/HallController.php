@@ -22,9 +22,11 @@ final class HallController extends AbstractController
     #[Route(name: 'app_hall_index', methods: ['GET'])]
     public function index(HallRepository $hallRepository): Response
     {
-        return $this->render('hall/index.html.twig', [
-            'halls' => $hallRepository->findAll(),
-        ]);
+        $publishedHalls = $hallRepository->findPublished();
+
+    return $this->render('hall/index.html.twig', [
+        'halls' => $publishedHalls,
+    ]);
     }
 
     #[Route('/new/{id}', name: 'app_hall_new', methods: ['GET', 'POST'])]

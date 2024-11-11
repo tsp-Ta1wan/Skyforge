@@ -16,28 +16,13 @@ class HallRepository extends ServiceEntityRepository
         parent::__construct($registry, Hall::class);
     }
 
-    //    /**
-    //     * @return Hall[] Returns an array of Hall objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('h')
-    //            ->andWhere('h.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('h.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Hall
-    //    {
-    //        return $this->createQueryBuilder('h')
-    //            ->andWhere('h.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * Finds all published halls.
+     *
+     * @return Hall[] Returns an array of Hall objects where 'published' is true.
+     */
+    public function findPublished(): array
+    {
+        return $this->findBy(['published' => true]);
+    }
 }
