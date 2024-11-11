@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Piece;
+use App\Entity\Arsenal;
 use App\Form\PieceType;
 use App\Repository\PieceRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,10 +23,11 @@ final class PieceController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_piece_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{id}', name: 'app_piece_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, Arsenal $arsenal): Response
     {
         $piece = new Piece();
+        $piece->setArsenal($arsenal);
         $form = $this->createForm(PieceType::class, $piece);
         $form->handleRequest($request);
 
@@ -33,7 +35,9 @@ final class PieceController extends AbstractController
             $entityManager->persist($piece);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_piece_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_arsenal_show',
+                                      ['id' => $arsenal->getId()],
+                                      Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('piece/new.html.twig', [
@@ -59,7 +63,7 @@ final class PieceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_piece_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_arsenal_show', ['id' => $piece->getArsenal()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('piece/edit.html.twig', [
@@ -76,6 +80,6 @@ final class PieceController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_piece_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_arsenal_show', ['id' => $piece->getArsenal()->getId()], Response::HTTP_SEE_OTHER);
     }
 }

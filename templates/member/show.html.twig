@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Member n°{{ member.id }}{% endblock %}
+
+{% block main %}
+<style>
+	table {
+		max-width: 80vw;
+		margin: 5vh 0 0 5vw;
+		font-size:1.2rem;	
+		text-align:start;
+	}
+	
+	td, th {
+		height: 4vh;
+		padding: 0 0 0 3vw !important;
+	}
+	thead th {
+		padding: 0 0 1vh 3vw !important;
+	}
+
+	table a, button a {
+		text-decoration: none;
+		color: inherit;
+		display: block; 
+		width: 100%;
+		height: 100%;
+		padding: 2vh 0;
+	}
+
+	table a:hover {
+		color: black;
+	}
+
+	button a:hover {
+		color: white;
+	}
+</style>
+
+<h1 style="margin:15vh 0 0 5vw">Member n°{{ member.id }}</h1>
+<h4 style="margin:2vh 0 5vh 5vw">Email: {{ member.email }}</h4>
+
+{% if member.arsenal %}
+<h4 style="margin:2vh 0 5vh 5vw">Arsenal: 
+	<a href="{{ path('arsenal_show', {'id': member.arsenal.id}) }}">
+		{{ member.arsenal.description }}
+	</a>
+</h4>
+{% else %}
+<h4 style="margin:2vh 0 5vh 5vw">No Arsenal Assigned</h4>
+{% endif %}
+
+{% if member.halls is not empty %}
+<h4 style="margin:2vh 0 5vh 5vw">Associated Halls:</h4>
+<table class="table table-hover table">
+  <thead>
+    <tr>
+      <th scope="col">Index</th>
+      <th scope="col">Hall Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for hall in member.halls %}
+    <tr>
+        <th scope="row">
+            <a href="{{ path('app_hall_show', {'id': hall.id}) }}">
+                {{ hall.id }}
+            </a>
+        </th>
+        <td>
+            <a href="{{ path('app_hall_show', {'id': hall.id}) }}">{{ hall.description }}</a>
+        </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<h4 style="margin:2vh 0 5vh 5vw">No Halls Assigned</h4>
+{% endif %}
+
+<figure style="margin:10vh 0 0 5vw">
+  <blockquote class="blockquote">
+    <h4>Did you know? Some medieval trials involved bizarre tests like walking on hot ploughshares to prove innocence!</h4>
+  </blockquote>
+  <figcaption class="blockquote-footer">
+    Random medieval facts
+  </figcaption>
+</figure>
+
+<button type="button" class="btn btn-dark" style="margin:5vh 0 0 5vw">
+    <a href="{{ path('member_list') }}">Back to Members List</a>
+</button>
+
+{% endblock %}

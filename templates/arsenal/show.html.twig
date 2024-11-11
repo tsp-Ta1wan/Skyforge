@@ -76,8 +76,12 @@
   </figcaption>
 </figure>
 
-<button type="button" class="btn btn-dark" style="margin:5vh 0 0 5vw"><a href="{{ path('arsenal_list') }}">Back to Arsenal list</a></button>
+<button type="button" class="btn btn-primary" style="margin:5vh 0 0 5vw">
+  <a href="{{ path('app_piece_new', {'id': arsenal.id}) }}">Add new</a>
+</button>
 
+<button type="button" class="btn btn-dark" style="margin:5vh 0 0 5vw"><a href="{{ path('arsenal_list') }}">Back to Arsenal list</a></button>
+<button type="button" class="btn btn-dark" style="margin:5vh 0 0 5vw"><a href="{{ path('app_member_show', {id: arsenal.member.id}) }}">Back to Member</a></button>
 
 
 {% endblock %}

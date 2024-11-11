@@ -22,10 +22,10 @@ class PieceType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('era')
-            ->add('arsenal', EntityType::class, [
-                'class' => Arsenal::class,
-                'choice_label' => 'id',
-            ])
+            
+            ->add('arsenal', null, [
+                'disabled'   => true,
+        ])
             ->add('halls', EntityType::class, [
                 'class' => Hall::class,
                 'choice_label' => 'id',

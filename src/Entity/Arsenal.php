@@ -32,6 +32,14 @@ class Arsenal
         $this->Pieces = new ArrayCollection();
     }
 
+    public function __toString(): string
+{
+    return sprintf(
+        $this->getDescription(),
+        
+    );
+}
+
     public function getId(): ?int
     {
         return $this->id;

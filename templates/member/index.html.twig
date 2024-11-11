@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Members List{% endblock %}
+
+{% block main %}
+<style>
+    table {
+        max-width: 80vw;
+        margin: 5vh 0 0 5vw;
+        font-size:1.2rem;    
+        text-align:start;
+    }
+    
+    td, th {
+        height: 4vh;
+        padding:0 0 0 3vw !important;
+    }
+    thead th {
+        padding: 0 0 1vh 3vw !important;
+    }
+
+    table a, button a {
+        text-decoration: none;
+        color: inherit;
+        display: block; 
+        width: 100%;
+        height: 100%;
+        padding: 2vh 0;
+    }
+    
+    table a:hover {
+        color:black;
+    }
+    button a:hover {
+        color:white;
+    }
+</style>
+
+<h1 style="margin:15vh 0 0 5vw">Members List</h1>
+<h4 style="margin:2vh 0 5vh 5vw">Explore all registered members</h4>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Index</th>
+      <th scope="col">Member Email</th>
+      <th scope="col">Arsenal Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for member in members %}
+    <tr>
+        <th scope="row">
+            <a href="{{ path('app_member_show', {'id': member.id}) }}">
+                {{ member.id }}
+            </a>
+        </th>
+        <td>
+            <a href="{{ path('app_member_show', {'id': member.id}) }}">{{ member.email }}</a>
+        </td>
+        <td>
+            {% if member.arsenal %}
+                <a href="{{ path('arsenal_show', {'id': member.arsenal.id}) }}">
+                    {{ member.arsenal.description }}
+                </a>
+            {% else %}
+                No Arsenal Assigned
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<figure style="margin:10vh 0 0 5vw">
+  <blockquote class="blockquote">
+    <h4>Did you know? Medieval guilds often held banquets and ceremonies to foster unity!</h4>
+  </blockquote>
+  <figcaption class="blockquote-footer">
+    Random medieval facts
+  </figcaption>
+</figure>
+
+<button type="button" class="btn btn-dark" style="margin:5vh 0 0 5vw">
+    <a href="#">Back to Home</a>
+
+</button>
+
+{% endblock %}
