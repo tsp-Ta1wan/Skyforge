@@ -18,12 +18,15 @@ class AppFixtures extends Fixture
     private const BLADE_ARS_1 = 'blade-inventory-1';
     private const MYTHICC_ARS_1 = 'mythicc-inventory-1';
     private const NOOB_ARS_1 = 'noobmaster-inventory-1';
+    private const admin_ars = 'admin_ars';
+    
 
     private const THOR_ODINSSON_1 = 'thor-odinsson-1';
     private const ELF_GUY_1 = 'elf-guy-1';
     private const BLADE_MASTER_1 = 'blade-master-1';
     private const MYTHICC_OLIVE_1 = 'mythicc-olive-1';
     private const NOOB_MASTER_1 = 'noobmaster-master-1';
+    private const admin = 'admin';
 
     
     private UserPasswordHasherInterface $hasher;
@@ -49,11 +52,12 @@ class AppFixtures extends Fixture
 
     private function loadMembers(ObjectManager $manager)
     {
-        foreach (self::MembersGenerator() as [$email, $plainPassword, $memberReference, $arsenalReference]) {
+        foreach (self::MembersGenerator() as [$email, $plainPassword, $memberReference, $arsenalReference, $roles]) {
             $member = new Member();
             $password = $this->hasher->hashPassword($member, $plainPassword);
             $member->setEmail($email);
             $member->setPassword($password);
+            $member->setRoles($roles); 
 
             // Set arsenal reference
             $arsenal = $this->getReference($arsenalReference);
@@ -154,11 +158,12 @@ class AppFixtures extends Fixture
 
     private function MembersGenerator()
 {   
-    yield ['thor.odinsson@example.com', 'vikingpass', self::THOR_ODINSSON_1, self::THOR_ARS_1];
-    yield ['valhalla@example.com', 'shieldpass', self::ELF_GUY_1, self::ELF_ARS_1];
-    yield ['blademaster@example.com', 'bladepass', self::BLADE_MASTER_1, self::BLADE_ARS_1];
-    yield ['mythiccwarrior@example.com', 'mythicpass', self::MYTHICC_OLIVE_1, self::MYTHICC_ARS_1];
-    yield ['noobmaster69@gmail.com', 'thorisnoob', self::NOOB_MASTER_1, self::NOOB_ARS_1];
+     // Member data = [email, password, member reference, arsenal reference, roles]
+     yield ['thor.odinsson@example.com', 'vikingpass', self::THOR_ODINSSON_1, self::THOR_ARS_1, ['ROLE_USER']];
+     yield ['valhalla@example.com', 'shieldpass', self::ELF_GUY_1, self::ELF_ARS_1, ['ROLE_USER']];
+     yield ['blademaster@example.com', 'bladepass', self::BLADE_MASTER_1, self::BLADE_ARS_1, ['ROLE_USER']];
+     yield ['mythiccwarrior@example.com', 'mythicpass', self::MYTHICC_OLIVE_1, self::MYTHICC_ARS_1, ['ROLE_USER']];
+     yield ['noobmaster69@gmail.com', 'thorisnoob', self::NOOB_MASTER_1, self::NOOB_ARS_1, ['ROLE_ADMIN']];
 }
     private function ArsenalsGenerator()
     {
@@ -168,6 +173,7 @@ class AppFixtures extends Fixture
         yield ['Viking Weapons', self::BLADE_ARS_1];
         yield ['Mythical Shields', self::MYTHICC_ARS_1];
         yield ['Renaissance Blades', self::NOOB_ARS_1];
+        
     }
     
 

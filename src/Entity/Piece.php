@@ -44,13 +44,14 @@ class Piece
     #[ORM\Column(nullable: true)]
     private ?int $imageSize = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updatedAt = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $role = null;
 
     #[ORM\ManyToOne(inversedBy: 'Pieces')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Arsenal $arsenal = null;
 
+    
     /**
      * @var Collection<int, Hall>
      */
@@ -202,5 +203,18 @@ class Piece
     public function getImageSize(): ?int
     {
         return $this->imageSize;
+    }
+
+   
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(?string $role): static
+    {
+        $this->role = $role;
+
+        return $this;
     }
 }
