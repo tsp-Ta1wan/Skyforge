@@ -19,18 +19,17 @@ class ArsenalController extends AbstractController
             'controller_name' => 'ArsenalController',
         ]);
     }
-    
+
     #[Route('/arsenal/list', name: 'arsenal_list', methods: ['GET'])]
     public function listAction(ArsenalRepository $ArsRepository)
     {
         $arsenals = $ArsRepository->findAll();
-        
+
         return $this->render('arsenal/list.html.twig', [
             'arsenals' => $arsenals,
         ]);
-        
     }
-    
+
     /**
      * Show an Arsenal
      *
@@ -39,10 +38,26 @@ class ArsenalController extends AbstractController
     #[Route('/arsenal/{id}', name: 'arsenal_show', requirements: ['id' => '\d+'])]
     public function show(Arsenal $arsenal): Response
     {
-        return $this->render('arsenal/show.html.twig',
-            [ 'arsenal' => $arsenal ]
+        $hasAccess = $this->isGranted('ROLE_ADMIN') ||
+            ($this->getUser() == $arsenal->getMember());
+        /** 
+        
+            if (! $hasAccess) {
+            return $this->redirectToRoute(
+                'app_member_show',
+                ['id' => $this->getUser()->getId()],
+                Response::HTTP_SEE_OTHER
             );
+        }
+         */
+        if (! $hasAccess) {
+            throw $this->createAccessDeniedException("You cannot access another member's arsenal!");
+        }
+
+
+        return $this->render(
+            'arsenal/show.html.twig',
+            ['arsenal' => $arsenal]
+        );
     }
-    
-    
 }

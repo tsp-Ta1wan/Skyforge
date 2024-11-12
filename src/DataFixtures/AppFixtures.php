@@ -19,7 +19,7 @@ class AppFixtures extends Fixture
     private const MYTHICC_ARS_1 = 'mythicc-inventory-1';
     private const NOOB_ARS_1 = 'noobmaster-inventory-1';
     private const admin_ars = 'admin_ars';
-    
+
 
     private const THOR_ODINSSON_1 = 'thor-odinsson-1';
     private const ELF_GUY_1 = 'elf-guy-1';
@@ -28,7 +28,7 @@ class AppFixtures extends Fixture
     private const NOOB_MASTER_1 = 'noobmaster-master-1';
     private const admin = 'admin';
 
-    
+
     private UserPasswordHasherInterface $hasher;
 
     public function __construct(UserPasswordHasherInterface $hasher)
@@ -57,7 +57,7 @@ class AppFixtures extends Fixture
             $password = $this->hasher->hashPassword($member, $plainPassword);
             $member->setEmail($email);
             $member->setPassword($password);
-            $member->setRoles($roles); 
+            $member->setRoles($roles);
 
             // Set arsenal reference
             $arsenal = $this->getReference($arsenalReference);
@@ -71,126 +71,117 @@ class AppFixtures extends Fixture
             $this->addReference($memberReference, $member);
         }
         $manager->flush();
-
     }
 
     private function loadHalls(ObjectManager $manager)
-{
-    foreach ($this->HallsGenerator() as [$description, $published, $memberReference]) {
-        // Create a new Hall entity
-        $hall = new Hall();
-        $hall->setDescription($description);
-        $hall->setPublished($published);
-        
-        // Retrieve the member associated with this hall
-        $member = $this->getReference($memberReference);
-        $hall->setMember($member);
-        
-        // Persist the hall entity
-        $manager->persist($hall);
+    {
+        foreach ($this->HallsGenerator() as [$description, $published, $memberReference]) {
+            // Create a new Hall entity
+            $hall = new Hall();
+            $hall->setDescription($description);
+            $hall->setPublished($published);
+
+            // Retrieve the member associated with this hall
+            $member = $this->getReference($memberReference);
+            $hall->setMember($member);
+
+            // Persist the hall entity
+            $manager->persist($hall);
+        }
+
+        // Flush all persisted entities to the database
+        $manager->flush();
     }
 
-    // Flush all persisted entities to the database
-    $manager->flush();
-}
 
 
-    
 
     private function loadArsenals(ObjectManager $manager)
     {
-        foreach (self::ArsenalsGenerator() as [$description,$arsenalReference]) {
+        foreach (self::ArsenalsGenerator() as [$description, $arsenalReference]) {
             $arsenal = new Arsenal();
-            
-            if (!$description){
+
+            if (!$description) {
                 $arsenal->setDescription('Thou hast no description as yet!');
-            }
-            else {
-            $arsenal->setDescription($description);
+            } else {
+                $arsenal->setDescription($description);
             }
             $manager->persist($arsenal);
             $this->addReference($arsenalReference, $arsenal);
         }
         // Flush
         $manager->flush();
-        
     }
 
     private function loadPieces(ObjectManager $manager)
-{
-    foreach (self::PiecesGenerator() as [$name, $description, $type, $acquired, $era, $arsenalReference, $imageName]) {
-        $arsenal = $this->getReference($arsenalReference);
-        
-        $piece = new Piece();
-        $piece->setName($name)
-            ->setDescription($description)
-            ->setType($type)
-            ->setAcquired(new \DateTime($acquired))
-            ->setEra($era)
-            ->setArsenal($arsenal);
-        
-        // Set the image file
-        $imagePath = __DIR__ . '/../../public/images/pieces/' . $imageName;
-        if (file_exists($imagePath)) {
-            
-            $piece->setImageName($imageName);
-        } else {
-            throw new \Exception("Image file not found: $imagePath");
+    {
+        foreach (self::PiecesGenerator() as [$name, $description, $type, $acquired, $era, $arsenalReference, $imageName]) {
+            $arsenal = $this->getReference($arsenalReference);
+
+            $piece = new Piece();
+            $piece->setName($name)
+                ->setDescription($description)
+                ->setType($type)
+                ->setAcquired(new \DateTime($acquired))
+                ->setEra($era)
+                ->setArsenal($arsenal);
+
+            // Set the image file
+            $imagePath = __DIR__ . '/../../public/images/pieces/' . $imageName;
+            if (file_exists($imagePath)) {
+
+                $piece->setImageName($imageName);
+            } else {
+                throw new \Exception("Image file not found: $imagePath");
+            }
+
+            $manager->persist($piece);
         }
 
-        $manager->persist($piece);
+        $manager->flush();
     }
 
-    $manager->flush();
-}
-
     private function HallsGenerator(): \Generator
-{
-    // Halls data: [description, published, member reference]
-    yield ['Thor\'s Hall of Blades', true, self::THOR_ODINSSON_1];
-    yield ['Thor\'s Hall of Axes', false, self::THOR_ODINSSON_1]; // Second hall for Thor
-    yield ['Elf\'s Ancient Armory', false, self::ELF_GUY_1];
-    yield ['Blade Master\'s Viking Hall', true, self::BLADE_MASTER_1];
-    yield ['Blade Master\'s Secret Stash', true, self::BLADE_MASTER_1]; // Second hall for Blade Master
-    yield ['Mythical Warrior\'s Sanctuary', true, self::MYTHICC_OLIVE_1];
-    yield ['Noobmaster\'s Renaissance Corner', false, self::NOOB_MASTER_1];
-}
+    {
+        // Halls data: [description, published, member reference]
+        yield ['Thor\'s Hall of Blades', true, self::THOR_ODINSSON_1];
+        yield ['Thor\'s Hall of Axes', false, self::THOR_ODINSSON_1]; // Second hall for Thor
+        yield ['Elf\'s Ancient Armory', false, self::ELF_GUY_1];
+        yield ['Blade Master\'s Viking Hall', true, self::BLADE_MASTER_1];
+        yield ['Blade Master\'s Secret Stash', true, self::BLADE_MASTER_1]; // Second hall for Blade Master
+        yield ['Mythical Warrior\'s Sanctuary', true, self::MYTHICC_OLIVE_1];
+        yield ['Noobmaster\'s Renaissance Corner', false, self::NOOB_MASTER_1];
+    }
 
     private function MembersGenerator()
-{   
-     // Member data = [email, password, member reference, arsenal reference, roles]
-     yield ['thor.odinsson@example.com', 'vikingpass', self::THOR_ODINSSON_1, self::THOR_ARS_1, ['ROLE_USER']];
-     yield ['valhalla@example.com', 'shieldpass', self::ELF_GUY_1, self::ELF_ARS_1, ['ROLE_USER']];
-     yield ['blademaster@example.com', 'bladepass', self::BLADE_MASTER_1, self::BLADE_ARS_1, ['ROLE_USER']];
-     yield ['mythiccwarrior@example.com', 'mythicpass', self::MYTHICC_OLIVE_1, self::MYTHICC_ARS_1, ['ROLE_USER']];
-     yield ['noobmaster69@gmail.com', 'thorisnoob', self::NOOB_MASTER_1, self::NOOB_ARS_1, ['ROLE_ADMIN']];
-}
+    {
+        // Member data = [email, password, member reference, arsenal reference, roles]
+        yield ['thor.odinsson@example.com', 'vikingpass', self::THOR_ODINSSON_1, self::THOR_ARS_1, ['ROLE_USER']];
+        yield ['valhalla@example.com', 'shieldpass', self::ELF_GUY_1, self::ELF_ARS_1, ['ROLE_USER']];
+        yield ['blademaster@example.com', 'bladepass', self::BLADE_MASTER_1, self::BLADE_ARS_1, ['ROLE_USER']];
+        yield ['mythiccwarrior@example.com', 'mythicpass', self::MYTHICC_OLIVE_1, self::MYTHICC_ARS_1, ['ROLE_USER']];
+        yield ['noobmaster69@gmail.com', 'thorisnoob', self::NOOB_MASTER_1, self::NOOB_ARS_1, ['ROLE_ADMIN']];
+    }
     private function ArsenalsGenerator()
     {
         // Arsenal data (only description for now)
         yield ['Medieval Armory', self::THOR_ARS_1];
-        yield ['No description', self::ELF_ARS_1]; 
+        yield ['No description', self::ELF_ARS_1];
         yield ['Viking Weapons', self::BLADE_ARS_1];
         yield ['Mythical Shields', self::MYTHICC_ARS_1];
         yield ['Renaissance Blades', self::NOOB_ARS_1];
-        
     }
-    
+
 
     private function PiecesGenerator()
-{
-    // Piece data = [name, description, type, acquired date, era, arsenal reference, image name];
-    yield ['Ancient Sword', 'Carried during the battle of Agincourt', 'Sword', '2020-05-15', 'Medieval', self::THOR_ARS_1, 'sword.jpg'];
-    yield ['Iron Mace', 'A heavy iron mace used in medieval battles', 'Mace', '2020-07-21', 'Medieval', self::THOR_ARS_1, 'mace.jpg'];
-    yield ['Morningstar', 'Used to give to your enemies sweet dreams', 'Mace', '2022-08-21', 'Medieval', self::THOR_ARS_1, 'morningstar.jpg'];
-    yield ['Elven Bow', 'A handcrafted bow by elves (debatable)', 'Bow', '2018-08-12', 'Fantasy', self::ELF_ARS_1, 'elven_bow.jpg'];
-    yield ['Battle Axe', 'A heavy battle axe used in war... and cutting fruits', 'Axe', '2019-11-23', 'Viking', self::BLADE_ARS_1, 'battle_axe.jpg'];
-    yield ['Viking Spear', 'A spear used in Viking raids', 'Spear', '2021-02-05', 'Viking', self::BLADE_ARS_1, 'viking_spear.jpg'];
-    yield ['Dragon Shield', 'Hide like a coward while looking cool', 'Shield', '2021-07-19', 'Mythical', self::MYTHICC_ARS_1, 'dragon_shield.jpg'];
-}
-
-    
-
-
-    
+    {
+        // Piece data = [name, description, type, acquired date, era, arsenal reference, image name];
+        yield ['Ancient Sword', 'Carried during the battle of Agincourt', 'Sword', '2020-05-15', 'Medieval', self::THOR_ARS_1, 'sword.jpg'];
+        yield ['Iron Mace', 'A heavy iron mace used in medieval battles', 'Mace', '2020-07-21', 'Medieval', self::THOR_ARS_1, 'mace.jpg'];
+        yield ['Morningstar', 'Used to give to your enemies sweet dreams', 'Mace', '2022-08-21', 'Medieval', self::THOR_ARS_1, 'morningstar.jpg'];
+        yield ['Elven Bow', 'A handcrafted bow by elves (debatable)', 'Bow', '2018-08-12', 'Fantasy', self::ELF_ARS_1, 'elven_bow.jpg'];
+        yield ['Battle Axe', 'A heavy battle axe used in war... and cutting fruits', 'Axe', '2019-11-23', 'Viking', self::BLADE_ARS_1, 'battle_axe.jpg'];
+        yield ['Viking Spear', 'A spear used in Viking raids', 'Spear', '2021-02-05', 'Viking', self::BLADE_ARS_1, 'viking_spear.jpg'];
+        yield ['Dragon Shield', 'Hide like a coward while looking cool', 'Shield', '2021-07-19', 'Mythical', self::MYTHICC_ARS_1, 'dragon_shield.jpg'];
+    }
 }
