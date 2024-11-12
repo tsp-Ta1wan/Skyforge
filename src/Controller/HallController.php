@@ -24,14 +24,20 @@ final class HallController extends AbstractController
     {
         $publishedHalls = $hallRepository->findPublished();
 
-    return $this->render('hall/index.html.twig', [
-        'halls' => $publishedHalls,
-    ]);
+        return $this->render('hall/index.html.twig', [
+            'halls' => $publishedHalls,
+        ]);
     }
 
     #[Route('/new/{id}', name: 'app_hall_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, Member $member): Response
     {
+        $hasAccess = $this->isGranted('ROLE_ADMIN') ||
+            ($this->getUser() == $member);
+
+        if (! $hasAccess) {
+            throw $this->createAccessDeniedException("You cannot access another member's arsenal!");
+        }
         $hall = new Hall();
         $hall->setMember($member); // Set the Member
         $form = $this->createForm(HallType::class, $hall);
@@ -41,7 +47,7 @@ final class HallController extends AbstractController
             $entityManager->persist($hall);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_member_show',['id' => $member->getId()],Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_member_show', ['id' => $member->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('hall/new.html.twig', [
@@ -61,14 +67,19 @@ final class HallController extends AbstractController
     #[Route('/{id}/edit', name: 'app_hall_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Hall $hall, EntityManagerInterface $entityManager): Response
     {
+        $hasAccess = $this->isGranted('ROLE_ADMIN') ||
+            ($this->getUser() == $hall->getMember());
+
+        if (! $hasAccess) {
+            throw $this->createAccessDeniedException("You cannot access another member's arsenal!");
+        }
         $form = $this->createForm(HallType::class, $hall);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_member_show',['id' => $hall->getMember()->getId()],Response::HTTP_SEE_OTHER);
-            
+            return $this->redirectToRoute('app_member_show', ['id' => $hall->getMember()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('hall/edit.html.twig', [
@@ -80,34 +91,32 @@ final class HallController extends AbstractController
     #[Route('/{id}', name: 'app_hall_delete', methods: ['POST'])]
     public function delete(Request $request, Hall $hall, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$hall->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $hall->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($hall);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_member_show',['id' => $hall->getMember()->getId()],Response::HTTP_SEE_OTHER);
-            
+        return $this->redirectToRoute('app_member_show', ['id' => $hall->getMember()->getId()], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{hall_id}/piece/{piece_id}',methods: ['GET'],name: 'app_hall_piece_show')]
-   public function pieceShow(
-       #[MapEntity(id: 'hall_id')]
-       Hall $hall,
-       #[MapEntity(id: 'piece_id')]
-       Piece $piece
-   ): Response
-   {
-    if(! $hall->getPieces()->contains($piece)) {
-                throw $this->createNotFoundException("Couldn't find such a piece in this hall!");
+    #[Route('/{hall_id}/piece/{piece_id}', methods: ['GET'], name: 'app_hall_piece_show')]
+    public function pieceShow(
+        #[MapEntity(id: 'hall_id')]
+        Hall $hall,
+        #[MapEntity(id: 'piece_id')]
+        Piece $piece
+    ): Response {
+        if (! $hall->getPieces()->contains($piece)) {
+            throw $this->createNotFoundException("Couldn't find such a piece in this hall!");
         }
 
-        if(! $hall->isPublished()) {
+        if (! $hall->isPublished()) {
             throw $this->createAccessDeniedException("Thou shall not access this fine piece!");
         }
 
-       return $this->render('hall/pieceshow.html.twig', [
-           'piece' => $piece,
-           'hall' => $hall
-       ]);
-   }
+        return $this->render('hall/pieceshow.html.twig', [
+            'piece' => $piece,
+            'hall' => $hall
+        ]);
+    }
 }

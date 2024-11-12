@@ -17,17 +17,17 @@ class HallType extends AbstractType
         // Get the current Hall object from the 'data' option
         $hall = $options['data'] ?? null;
 
-        if (!$hall || !$hall->getCreator()) {
+        if (!$hall || !$hall->getMember()) {
             throw new \LogicException('Hall or its creator is not set. Ensure you pass the proper data to the form.');
         }
 
         // Get the creator (Member) of the hall
-        $member = $hall->getCreator();
+        $member = $hall->getMember();
 
         $builder
             ->add('description')
             ->add('published')
-            ->add('creator', null, [
+            ->add('member', null, [
                 'disabled' => true,
             ])
             ->add('pieces', EntityType::class, [

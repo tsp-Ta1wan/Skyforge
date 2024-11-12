@@ -26,19 +26,26 @@ final class PieceController extends AbstractController
     #[Route('/new/{id}', name: 'app_piece_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, Arsenal $arsenal): Response
     {
+        $hasAccess = $this->isGranted('ROLE_ADMIN') || ($this->getUser() == $arsenal->getMember());;
+
+        if (! $hasAccess) {
+            throw $this->createAccessDeniedException("Piece creation not authorized for user");
+        }
         $piece = new Piece();
         $piece->setArsenal($arsenal);
         $form = $this->createForm(PieceType::class, $piece);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $entityManager->persist($piece);
             $entityManager->flush();
 
-            return $this->redirectToRoute('arsenal_show',
-                                      ['id' => $arsenal->getId()],
-                                      Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(
+                'arsenal_show',
+                ['id' => $arsenal->getId()],
+                Response::HTTP_SEE_OTHER
+            );
         }
 
         return $this->render('piece/new.html.twig', [
@@ -50,6 +57,20 @@ final class PieceController extends AbstractController
     #[Route('/{id}', name: 'app_piece_show', methods: ['GET'])]
     public function show(Piece $piece): Response
     {
+        $published = false;
+        $halls = $piece->getHalls();
+        foreach ($halls as $hall) {
+            if ($hall->isPublished()) {
+                $published = true;
+                break;
+            }
+        };
+        $hasAccess = $this->isGranted('ROLE_ADMIN') || $published || ($this->getUser() == $piece->getArsenal()->getMember());
+        dump($published);
+        dump($this->getUser() == $piece->getArsenal()->getMember());
+        if (! $hasAccess) {
+            throw $this->createAccessDeniedException("Owner of this piece has not made it public!");
+        }
         return $this->render('piece/show.html.twig', [
             'piece' => $piece,
         ]);
@@ -76,7 +97,7 @@ final class PieceController extends AbstractController
     #[Route('/{id}', name: 'app_piece_delete', methods: ['POST'])]
     public function delete(Request $request, Piece $piece, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$piece->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $piece->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($piece);
             $entityManager->flush();
         }

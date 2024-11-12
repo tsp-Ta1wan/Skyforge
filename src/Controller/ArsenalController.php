@@ -25,6 +25,12 @@ class ArsenalController extends AbstractController
     {
         $arsenals = $ArsRepository->findAll();
 
+        $hasAccess = $this->isGranted('ROLE_ADMIN');
+
+        if (! $hasAccess) {
+            throw $this->createAccessDeniedException("User not authorized");
+        }
+
         return $this->render('arsenal/list.html.twig', [
             'arsenals' => $arsenals,
         ]);
@@ -40,16 +46,7 @@ class ArsenalController extends AbstractController
     {
         $hasAccess = $this->isGranted('ROLE_ADMIN') ||
             ($this->getUser() == $arsenal->getMember());
-        /** 
-        
-            if (! $hasAccess) {
-            return $this->redirectToRoute(
-                'app_member_show',
-                ['id' => $this->getUser()->getId()],
-                Response::HTTP_SEE_OTHER
-            );
-        }
-         */
+
         if (! $hasAccess) {
             throw $this->createAccessDeniedException("You cannot access another member's arsenal!");
         }
