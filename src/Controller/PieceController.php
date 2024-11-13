@@ -39,7 +39,11 @@ final class PieceController extends AbstractController
         }
         $piece = new Piece();
         $piece->setArsenal($arsenal);
-        $form = $this->createForm(PieceType::class, $piece);
+        $member = $arsenal->getMember(); // i use this to limit the Halls shown only to the said member
+
+        $form = $this->createForm(PieceType::class, $piece, [
+            'member' => $member, // Pass the member to the form
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
