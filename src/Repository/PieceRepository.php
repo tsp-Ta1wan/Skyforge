@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Piece;
+use App\Entity\Member;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,6 +15,19 @@ class PieceRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Piece::class);
+    }
+    /**
+     * @return [Objet][] Returns an array of [Objet] objects for a member
+     */
+    public function findMemberPieces(Member $member): array
+    {
+        return $this->createQueryBuilder('o')
+            ->leftJoin('o.arsenal', 'i')
+            ->leftJoin('i.member', 'm') // Explicitly join the member
+            ->andWhere('m = :member')  // Use the alias for the member
+            ->setParameter('member', $member)
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**

@@ -15,11 +15,17 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/piece')]
 final class PieceController extends AbstractController
 {
-    #[Route(name: 'app_piece_index', methods: ['GET'])]
+    #[Route('/', name: 'app_piece_index', methods: ['GET'])]
     public function index(PieceRepository $pieceRepository): Response
     {
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $pieces = $pieceRepository->findAll();
+        } else {
+            $member = $this->getUser();
+            $pieces = $pieceRepository->findMemberPieces($member);
+        }
         return $this->render('piece/index.html.twig', [
-            'pieces' => $pieceRepository->findAll(),
+            'pieces' => $pieces,
         ]);
     }
 
