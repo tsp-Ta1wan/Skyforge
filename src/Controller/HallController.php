@@ -59,6 +59,19 @@ final class HallController extends AbstractController
     #[Route('/{id}', name: 'app_hall_show', methods: ['GET'])]
     public function show(Hall $hall): Response
     {
+        $hasAccess = false;
+        if ($this->isGranted('ROLE_ADMIN') || $hall->isPublished()) {
+            $hasAccess = true;
+        } else {
+            $member = $this->getUser();
+            if ($member &&  ($member == $hall->getMember())) {
+                $hasAccess = true;
+            }
+        }
+        if (! $hasAccess) {
+            throw $this->createAccessDeniedException("You cannot access the requested resource!");
+        }
+
         return $this->render('hall/show.html.twig', [
             'hall' => $hall,
         ]);
