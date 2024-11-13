@@ -5,26 +5,31 @@ bootstrap_menu:
         arsenals:
           label: 'Arsenals'
           route: 'arsenal_list'
+        halls:
+          label: 'Halls'
+          route: 'app_hall_index'
         help:
           label: 'Help'
           items:
             github:
               label: 'Github Repository'
               url: 'https://github.com/tsp-Ta1wan/Skyforge'
-            routes:
-              label: 'Project routes'
-              route: 'app_arsenal'  
+
     anonymousaccount:
       items:
          login:
             label: 'Login'
             route: 'app_login'
-#        register:
-#           label: 'Register'
-#           route: 'app_register'
+
     account:
       items:
-         logout:
-            label: 'Logout'
-            route: 'app_logout'
-            roles: [ 'ROLE_USER' ]
+        member:
+          label: 'Account'
+          items:
+            profile:
+              label: 'Profile'
+              route: 'app_member_redirect' 
+            logout:
+              label: 'Logout'
+              route: 'app_logout'
+              roles: [ 'ROLE_USER' ]

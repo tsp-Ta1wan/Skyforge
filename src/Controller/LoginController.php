@@ -9,7 +9,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 
 use App\Entity\Member;
-use App\Repository\MemberRepository;
+
 
 class LoginController extends AbstractController
 {
@@ -31,14 +31,11 @@ class LoginController extends AbstractController
     #[Route('/login-redirect', name: 'app_login_redirect', methods: ['GET', 'POST'])]
     public function loginRedirect(): Response
     {
-        // Fetch the currently logged-in user
         $user = $this->getUser();
 
-        // Ensure the user is a Member entity
         if (!$user instanceof Member) {
             throw $this->createAccessDeniedException('Access denied.');
         }
-
 
         return $this->redirectToRoute(
             'app_member_show',

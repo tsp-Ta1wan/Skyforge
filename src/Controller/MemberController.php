@@ -3,11 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Member;
-use App\Form\MemberType;
+
 use App\Repository\MemberRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Psr\Log\LoggerInterface;
 
 #[Route('/member')]
 class MemberController extends AbstractController
@@ -28,5 +29,19 @@ class MemberController extends AbstractController
         return $this->render('member/show.html.twig', [
             'member' => $member,
         ]);
+    }
+
+    #[Route('/profile-redirect', name: 'app_member_redirect', methods: ['GET'])]
+    public function memberRedirect(): Response
+    {
+
+        dump('stuff)');
+        $user = $this->getUser();
+        dump($user);
+        if (!$user instanceof Member) {
+            throw $this->createAccessDeniedException('Access denied.');
+        }
+
+        return $this->redirectToRoute('app_member_show', ['id' => $user->getId()]);
     }
 }
