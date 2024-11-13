@@ -91,6 +91,11 @@ final class HallController extends AbstractController
     #[Route('/{id}', name: 'app_hall_delete', methods: ['POST'])]
     public function delete(Request $request, Hall $hall, EntityManagerInterface $entityManager): Response
     {
+        $hasAccess = $this->isGranted('ROLE_ADMIN') || ($this->getUser() == $hall->getMember());
+
+        if (! $hasAccess) {
+            throw $this->createAccessDeniedException("You cannot delete another member's hall!");
+        }
         if ($this->isCsrfTokenValid('delete' . $hall->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($hall);
             $entityManager->flush();
