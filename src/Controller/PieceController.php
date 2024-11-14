@@ -12,11 +12,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/piece')]
+
 final class PieceController extends AbstractController
 {
-    #[Route('/', name: 'app_piece_index', methods: ['GET'])]
-    public function index(PieceRepository $pieceRepository): Response
+
+    #[Route('/home', name: 'app_home', methods: ['GET'])]
+    public function home(PieceRepository $pieceRepository): Response
     {
         if ($this->isGranted('ROLE_ADMIN')) {
             $pieces = $pieceRepository->findAll();
@@ -29,7 +30,22 @@ final class PieceController extends AbstractController
         ]);
     }
 
-    #[Route('/new/{id}', name: 'app_piece_new', methods: ['GET', 'POST'])]
+    #[Route('/piece', name: 'app_piece_index', methods: ['GET'])]
+    public function index(PieceRepository $pieceRepository): Response
+    {
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $pieces = $pieceRepository->findAll();
+        } else {
+            $member = $this->getUser();
+            $pieces = $pieceRepository->findMemberPieces($member);
+        }
+        return $this->render('piece/index.html.twig', [
+            'pieces' => $pieces,
+        ]);
+    }
+
+
+    #[Route('/piece/new/{id}', name: 'app_piece_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, Arsenal $arsenal): Response
     {
         $hasAccess = $this->isGranted('ROLE_ADMIN') || ($this->getUser() == $arsenal->getMember());;
@@ -64,7 +80,7 @@ final class PieceController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_piece_show', methods: ['GET'])]
+    #[Route('/piece/{id}', name: 'app_piece_show', methods: ['GET'])]
     public function show(Piece $piece): Response
     {
         $published = false;
@@ -86,7 +102,7 @@ final class PieceController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_piece_edit', methods: ['GET', 'POST'])]
+    #[Route('/piece/{id}/edit', name: 'app_piece_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Piece $piece, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(PieceType::class, $piece);
@@ -104,7 +120,7 @@ final class PieceController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_piece_delete', methods: ['POST'])]
+    #[Route('/piece/{id}', name: 'app_piece_delete', methods: ['POST'])]
     public function delete(Request $request, Piece $piece, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $piece->getId(), $request->getPayload()->getString('_token'))) {
