@@ -1,77 +1,83 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Arsenal List{% endblock %}
-
-{% block main %}
-<style>
-	table {
-		max-width: 80vw;
-		margin: 5vh 0 0 5vw;
-		font-size:1.2rem;	
-		text-align:start;
-	}
-	
-	td,th {
-	height: 4vh;
-	padding:0 0 0 3vw !important;
-	}
-	
-	thead th{
-		padding: 0 0 1vh 3vw!important;
-	
-	}
-	
-    /*this applies only to the table not the nav*/
-    table a {
-        text-decoration: none;
-        color: inherit;
-        display: block; 
-        width: 100%;
-        height: 100%;
-        padding: 2vh 0 2vh 0;
-    }
-    
-    a:hover{
-    	color:black;
-    }
-    
-</style>
-<h1 style="margin:15vh 0 0 5vw">Arsenals</h1>
-
-
-<table class="table table-hover table">
-  <thead class="">
-    <tr>
-      <th scope="col">Index</th>
-      <th scope="col">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for arsenal in arsenals %}
-    <tr>
-        <th scope="row">
-            <a href="{{ path('arsenal_show', {'id': arsenal.id}) }}">
-                {{ arsenal.id }}
-            </a>
-        </th>
-        <td>
-            <a href="{{ path('arsenal_show', {'id': arsenal.id}) }}">
-                {{ arsenal.description }}
-            </a>
-        </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
-<figure  style="margin:10vh 0 0 5vw">
-  <blockquote class="blockquote">
-    <h4>Animals could be tried and convicted for crimes, and if found guilty sentenced to death </h4>
-  </blockquote>
-  <figcaption class="blockquote-footer">
-    Random medieval facts
-  </figcaption>
-</figure>
-
+{% block title %}Arsenal List
 {% endblock %}
 
+{% block main %}
+	<style>
+		table
+		{
+			max-width: 80vw;
+			margin: 5vh 0 0 5vw;
+			font-size: 1.2rem;
+			text-align: start;
+		}
+
+		td,
+		th
+		{
+			height: 4vh;
+			padding: 0 0 0 3vw !important;
+		}
+
+		thead th
+		{
+			padding: 0 0 1vh 3vw !important;
+
+		}
+
+		/*this applies only to the table not the nav*/
+		table a
+		{
+			text-decoration: none;
+			color: inherit;
+			display: block;
+			width: 100%;
+			height: 100%;
+			padding: 2vh 0;
+		}
+
+		a:hover
+		{
+			color: black;
+		}
+	</style>
+	<h1 style="margin:15vh 0 0 5vw">Arsenals</h1>
+
+
+	<table class="table table-hover table">
+		<thead class="">
+			<tr>
+				<th scope="col">Index</th>
+				<th scope="col">Description</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for arsenal in arsenals %}
+				<tr>
+					<th scope="row">
+						<a href="{{ path('app_arsenal_show', {'id': arsenal.id}) }}">
+							{{ arsenal.id }}
+						</a>
+					</th>
+					<td>
+						<a href="{{ path('app_arsenal_show', {'id': arsenal.id}) }}">
+							{{ arsenal.description }}
+						</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<figure style="margin:10vh 0 0 5vw">
+		<blockquote class="blockquote">
+			<h4>Animals could be tried and convicted for crimes, and if found guilty sentenced to death
+			</h4>
+		</blockquote>
+		<figcaption class="blockquote-footer">
+			Random medieval facts
+		</figcaption>
+	</figure>
+
+{% endblock %}

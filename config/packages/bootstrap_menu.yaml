@@ -4,7 +4,7 @@ bootstrap_menu:
       items:
         arsenals:
           label: 'Arsenals'
-          route: 'arsenal_list'
+          route: 'app_arsenal_list'
         halls:
           label: 'Halls'
           route: 'app_hall_index'

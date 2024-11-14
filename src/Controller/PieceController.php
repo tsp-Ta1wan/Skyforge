@@ -24,7 +24,7 @@ final class PieceController extends AbstractController
             $member = $this->getUser();
             $pieces = $pieceRepository->findMemberPieces($member);
         }
-        return $this->render('piece/index.html.twig', [
+        return $this->render('piece/home.html.twig', [
             'pieces' => $pieces,
         ]);
     }

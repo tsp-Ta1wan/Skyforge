@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Piece index
+{% endblock %}
+
+{% block main %}
+	<h1>Piece index</h1>
+	<div class="d-flex justify-content-center">
+		<div class="d-flex justify-content-evenly flex-wrap" style="width:80vw">
+			{% for piece in pieces %}
+				<div class="card mb-4 mt-4 ms-5 me-5" style="width: 18rem;">
+					<img src="{{ vich_uploader_asset(piece, 'imageFile') }}" class="card-img-top img-fluid" style="height: 30vh; width: auto">
+					<div class="card-body">
+						<h5 class="card-title">{{ piece.name }}</h5>
+						<a href="{{ path('app_member_show', {'id': piece.arsenal.member.id}) }}" class="card-link">{{piece.arsenal.member}}</a>
+						<p class="card-text">{{ piece.description }}</p>
+						<a href="{{ path('app_piece_show', {'id': piece.id}) }}" class="btn btn-primary">Details</a>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+{% endblock %}

@@ -10,17 +10,11 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Arsenal;
 use App\Repository\ArsenalRepository;
 
+#[Route('/arsenal')]
 class ArsenalController extends AbstractController
 {
-    #[Route('/arsenal', name: 'app_arsenal')]
-    public function index(): Response
-    {
-        return $this->render('arsenal/index.html.twig', [
-            'controller_name' => 'ArsenalController',
-        ]);
-    }
 
-    #[Route('/arsenal/list', name: 'arsenal_list', methods: ['GET'])]
+    #[Route('/', name: 'app_arsenal_list', methods: ['GET'])]
     public function listAction(ArsenalRepository $ArsRepository)
     {
         $arsenals = $ArsRepository->findAll();
@@ -41,7 +35,7 @@ class ArsenalController extends AbstractController
      *
      * @param Integer $id (note that the id must be an integer)
      */
-    #[Route('/arsenal/{id}', name: 'arsenal_show', requirements: ['id' => '\d+'])]
+    #[Route('/{id}', name: 'app_arsenal_show', requirements: ['id' => '\d+'])]
     public function show(Arsenal $arsenal): Response
     {
         $hasAccess = $this->isGranted('ROLE_ADMIN') ||

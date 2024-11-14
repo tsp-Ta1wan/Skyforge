@@ -1,88 +1,101 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Arsenal n°{{ arsenal.id }}{% endblock %}
+{% block title %}Arsenal n°{{ arsenal.id }}
+{% endblock %}
 
 {% block main %}
-<style>
-	table {
-		max-width: 80vw;
-		margin: 5vh 0 0 5vw;
-		font-size:1.2rem;	
-		text-align:start	;
-	}
-	
-	td,th {
-	height: 4vh;
-	padding:0 0 0 3vw !important;
-	}
-	thead th{
-		padding: 0 0 1vh 3vw!important;
-	
-	}
-    /*this applies only to the table not the nav*/
-    table a, button a {
-        text-decoration: none;
-        color: inherit;
-        display: block; 
-        width: 100%;
-        height: 100%;
-        padding: 2vh 0 2vh 0;
-    }
-    
-    table a:hover{
-    	color:black;
-    }
-    button a:hover{
-    	color:white;
-    }
-</style>
-<h1 style="margin:15vh 0 0 5vw">Arsenal n°{{ arsenal.id }}</h1>
-<h4 style="margin:2vh 0 5vh 5vw">{{ arsenal.description }}</h4>
+	<style>
+		table
+		{
+			max-width: 80vw;
+			margin: 5vh 0 0 5vw;
+			font-size: 1.2rem;
+			text-align: start;
+		}
+
+		td,
+		th
+		{
+			height: 4vh;
+			padding: 0 0 0 3vw !important;
+		}
+		thead th
+		{
+			padding: 0 0 1vh 3vw !important;
+
+		}
+		/*this applies only to the table not the nav*/
+		table a,
+		button a
+		{
+			text-decoration: none;
+			color: inherit;
+			display: block;
+			width: 100%;
+			height: 100%;
+			padding: 2vh 0;
+		}
+
+		table a:hover
+		{
+			color: black;
+		}
+		button a:hover
+		{
+			color: white;
+		}
+	</style>
+	<h1 style="margin:15vh 0 0 5vw">Arsenal n°{{ arsenal.id }}</h1>
+	<h4 style="margin:2vh 0 5vh 5vw">{{ arsenal.description }}</h4>
 
 
-<table class="table table-hover table">
-  <thead class="">
-    <tr>
-      <th scope="col">Index</th>
-      <th scope="col">Piece name</th>
-      <th scope="col">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for piece in arsenal.pieces %}
-    <tr>
-        <th scope="row">
-            <a href="{{ path('app_piece_show', {'id': piece.id}) }}">
-                {{ piece.id }}
-            </a>
-        </th>
-        <td>
-            <a href="{{ path('app_piece_show', {'id': piece.id}) }}">{{ piece.name }}</a>
-        </td>
-        <td>
-            <a href="{{ path('app_piece_show', {'id': piece.id}) }}">{{ piece.description }}</a>
-        </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+	<table class="table table-hover table">
+		<thead class="">
+			<tr>
+				<th scope="col">Index</th>
+				<th scope="col">Piece name</th>
+				<th scope="col">Description</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for piece in arsenal.pieces %}
+				<tr>
+					<th scope="row">
+						<a href="{{ path('app_piece_show', {'id': piece.id}) }}">
+							{{ piece.id }}
+						</a>
+					</th>
+					<td>
+						<a href="{{ path('app_piece_show', {'id': piece.id}) }}">{{ piece.name }}</a>
+					</td>
+					<td>
+						<a href="{{ path('app_piece_show', {'id': piece.id}) }}">{{ piece.description }}</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 
-<figure  style="margin:10vh 0 0 5vw">
-  <blockquote class="blockquote">
-    <h4>Animals could be tried and convicted for crimes, and if found guilty sentenced to death </h4>
-  </blockquote>
-  <figcaption class="blockquote-footer">
-    Random medieval facts
-  </figcaption>
-</figure>
+	<figure style="margin:10vh 0 0 5vw">
+		<blockquote class="blockquote">
+			<h4>Animals could be tried and convicted for crimes, and if found guilty sentenced to death
+			</h4>
+		</blockquote>
+		<figcaption class="blockquote-footer">
+			Random medieval facts
+		</figcaption>
+	</figure>
 
-<button type="button" class="btn btn-primary" style="margin:5vh 0 0 5vw">
-  <a href="{{ path('app_piece_new', {'id': arsenal.id}) }}">Add new</a>
-</button>
+	<button type="button" class="btn btn-primary" style="margin:5vh 0 0 5vw">
+		<a href="{{ path('app_piece_new', {'id': arsenal.id}) }}">Add new</a>
+	</button>
 
-<button type="button" class="btn btn-dark" style="margin:5vh 0 0 5vw"><a href="{{ path('arsenal_list') }}">Back to Arsenal list</a></button>
-<button type="button" class="btn btn-dark" style="margin:5vh 0 0 5vw"><a href="{{ path('app_member_show', {id: arsenal.member.id}) }}">Back to Member</a></button>
+	<button type="button" class="btn btn-dark" style="margin:5vh 0 0 5vw">
+		<a href="{{ path('app_arsenal_list') }}">Back to Arsenal list</a>
+	</button>
+	<button type="button" class="btn btn-dark" style="margin:5vh 0 0 5vw">
+		<a href="{{ path('app_member_show', {id: arsenal.member.id}) }}">Back to Member</a>
+	</button>
 
 
 {% endblock %}
-
