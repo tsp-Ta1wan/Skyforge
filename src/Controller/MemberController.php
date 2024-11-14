@@ -35,13 +35,16 @@ class MemberController extends AbstractController
     public function memberRedirect(): Response
     {
 
-        dump('stuff)');
         $user = $this->getUser();
-        dump($user);
+
         if (!$user instanceof Member) {
             throw $this->createAccessDeniedException('Access denied.');
         }
 
-        return $this->redirectToRoute('app_member_show', ['id' => $user->getId()]);
+        return $this->redirectToRoute(
+            'app_member_show',
+            ['id' => $user->getId()],
+            Response::HTTP_SEE_OTHER
+        );
     }
 }
