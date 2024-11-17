@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
 #[Route('/member')]
 class MemberController extends AbstractController
 {
-    #[Route('/list', name: 'member_list')]
+    #[Route('/', name: 'app_member_list')]
     public function index(MemberRepository $memberRepository): Response
     {
         $members = $memberRepository->findAll();

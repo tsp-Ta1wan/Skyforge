@@ -4,13 +4,16 @@ bootstrap_menu:
       items:
         home:
           label: 'Home'
-          route: 'app_piece_index'
+          route: 'app_home'
         arsenals:
           label: 'Arsenals'
           route: 'app_arsenal_list'
         halls:
           label: 'Halls'
           route: 'app_hall_index'
+        members:
+          label: 'Members'
+          route: 'app_member_list'
         help:
           label: 'Help'
           items:
