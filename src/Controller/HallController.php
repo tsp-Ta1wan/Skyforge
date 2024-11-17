@@ -22,10 +22,19 @@ final class HallController extends AbstractController
     #[Route(name: 'app_hall_index', methods: ['GET'])]
     public function index(HallRepository $hallRepository): Response
     {
-        $publishedHalls = $hallRepository->findPublished();
+        // Ensure the user is logged in
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        // Check if the user has the ROLE_ADMIN
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $halls = $hallRepository->findAll(); // Admin sees all halls
+        } else {
+            // Regular users only see published halls
+            $halls = $hallRepository->findPublished();
+        }
 
         return $this->render('hall/index.html.twig', [
-            'halls' => $publishedHalls,
+            'halls' => $halls,
         ]);
     }
 

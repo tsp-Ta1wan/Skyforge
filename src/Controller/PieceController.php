@@ -48,7 +48,7 @@ final class PieceController extends AbstractController
     #[Route('/piece/new/{id}', name: 'app_piece_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, Arsenal $arsenal): Response
     {
-        $hasAccess = $this->isGranted('ROLE_ADMIN') || ($this->getUser() == $arsenal->getMember());;
+        $hasAccess = $this->isGranted('ROLE_ADMIN') || ($this->getUser() == $arsenal->getMember());
 
         if (! $hasAccess) {
             throw $this->createAccessDeniedException("Piece creation not authorized for user");
