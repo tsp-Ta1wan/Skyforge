@@ -1,4 +1,4 @@
-**Bonjour! Ici tu trouveras tous les données nécéssaires pour l'évaluation de mon projet Skyforge.**
+**Bonjour! Consultez le [Github](https://github.com/tsp-Ta1wan/Skyforge) pour une version meilleure du README.**
 
 ## Informations générales
 **Etudiant**: Louay Belkhamsa
@@ -8,40 +8,45 @@
 **Thème**: Site pour la création de collections de pièces militaires (épées, arcs, armures, pistolets, etc...)
 
 ## Avancement:
-Toutes les étapes du checklist sont normalement réalisée.
+Toutes les étapes obligatoires du checklist sont réalisées.
 Vous pouvez consulter ce lien pour le [TODO.md](https://github.com/tsp-Ta1wan/Skyforge/blob/dev/TODO.md) 
 
-## Erreurs/fonctionnalités manquantes:
-Tous les fonctionnalités codées se compilent et marchent correctement sur mon environnement. 
 
 ## Nomenclature:
 Inventaire = arsenal 
-
 Objet = piece
+Galerie = hall
+Member = member
 
-## Mise en marche:
-Après avoir téléchargé et extrait le rendu-CSC4101.zip suivez ces étapes en cas de besoin:
-1.  Ouvrez le terminal et lancez ces commandes:
+## Users pour test:
+# Admin:
+**email:** admin@admin.com
+**mot de passe:** admin
 
-**Pour Linux/WSL Ubuntu**:
-```
-cd rendu-CSC4101
-rm -fr composer.lock symfony.lock vendor/ var/cache/
-symfony composer install
-symfony server:start
-```
-**Pour Windows**:
-```
-cd rendu-CSC4101
-del /f /q composer.lock
-del /f /q symfony.lock
-rmdir /s /q vendor
-rmdir /s /q var\cache
-symfony composer install
-symfony server:start
-```
+# User:
+**email:** blademaster@example.com
+**mot de passe:** bladepass
 
-2. Sur votre navigateur ouvrez **http://localhost:8000/arsenal/list**
+## Useful Routes: 
+**Login:** http://localhost:8000/login
 
-3. Naviguez sur l'application.
- 
+# Pieces:
+**Home:** http://localhost:8000/home
+**Piece list:** http://localhost:8000/piece
+**Show piece:** http://localhost:8000/piece/{id}
+**Edit piece:** http://localhost:8000/piece/{id}/edit
+
+# Arsenals:
+**Arsenal list:** http://localhost:8000/arsenal
+**Show arsenal:** http://localhost:8000/arsenal/{id}
+
+# Halls:
+**Halls list:** http://localhost:8000/hall
+**Show hall:** http://localhost:8000/hall/{id}
+**Edit hall:** http://localhost:8000/hall/{id}/edit
+**Show piece in hall:** http://localhost:8000/hall/{hall_id}/piece/{piece_id}
+
+# Members:
+**Members list:** http://localhost:8000/member
+**Show member:** http://localhost:8000/member/{id}
+
