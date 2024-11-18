@@ -41,7 +41,7 @@ class MemberController extends AbstractController
 
 
         $user = $this->getUser();
-        dump($user);
+
         if (!$user instanceof Member) {
             throw $this->createAccessDeniedException('Access denied.');
         }
