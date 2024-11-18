@@ -100,8 +100,6 @@ final class PieceController extends AbstractController
             }
         };
         $hasAccess = $this->isGranted('ROLE_ADMIN') || $published || ($this->getUser() == $piece->getArsenal()->getMember());
-        dump($published);
-        dump($this->getUser() == $piece->getArsenal()->getMember());
         if (! $hasAccess) {
             throw $this->createAccessDeniedException("Owner of this piece has not made it public!");
         }
@@ -114,6 +112,10 @@ final class PieceController extends AbstractController
     public function edit(Request $request, Piece $piece, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $hasAccess = $this->isGranted('ROLE_ADMIN') || ($this->getUser() == $piece->getArsenal()->getMember());
+        if (! $hasAccess) {
+            throw $this->createAccessDeniedException("Cannot edit other members' pieces!");
+        }
         $form = $this->createForm(PieceType::class, $piece);
         $form->handleRequest($request);
 
@@ -133,6 +135,10 @@ final class PieceController extends AbstractController
     public function delete(Request $request, Piece $piece, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $hasAccess = $this->isGranted('ROLE_ADMIN') || ($this->getUser() == $piece->getArsenal()->getMember());
+        if (! $hasAccess) {
+            throw $this->createAccessDeniedException("Cannot delete other members' pieces!");
+        }
         if ($this->isCsrfTokenValid('delete' . $piece->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($piece);
             $entityManager->flush();
