@@ -13,37 +13,37 @@ Vous pouvez consulter ce lien pour le [TODO.md](https://github.com/tsp-Ta1wan/Sk
 
 
 ## Nomenclature:
-Inventaire = arsenal 
-Objet = piece
-Galerie = hall
-Member = member
+Inventaire = arsenal   
+Objet = piece  
+Galerie = hall  
+Member = member  
 
 ## Users pour test:
-# Admin:
-**email:** admin@admin.com
-**mot de passe:** admin
+### Admin:  
+**email:** admin@admin.com  
+**mot de passe:** admin  
 
-# User:
-**email:** blademaster@example.com
-**mot de passe:** bladepass
+### User:  
+**email:** blademaster@example.com  
+**mot de passe:** bladepass  
 
 ## Useful Routes: 
-**Login:** http://localhost:8000/login
+**Login:** http://localhost:8000/login  
 
-# Pieces:
-**Home:** http://localhost:8000/home
-**Piece list:** http://localhost:8000/piece
-**Show piece:** http://localhost:8000/piece/{id}
-**Edit piece:** http://localhost:8000/piece/{id}/edit
+### Pieces:
+**Home:** http://localhost:8000/home    
+**Piece list:** http://localhost:8000/piece    
+**Show piece:** http://localhost:8000/piece/{id}    
+**Edit piece:** http://localhost:8000/piece/{id}/edit    
 
-# Arsenals:
-**Arsenal list:** http://localhost:8000/arsenal
-**Show arsenal:** http://localhost:8000/arsenal/{id}
+### Arsenals:  
+**Arsenal list:** http://localhost:8000/arsenal    
+**Show arsenal:** http://localhost:8000/arsenal/{id}  
 
-# Halls:
-**Halls list:** http://localhost:8000/hall
-**Show hall:** http://localhost:8000/hall/{id}
-**Edit hall:** http://localhost:8000/hall/{id}/edit
+### Halls:
+**Halls list:** http://localhost:8000/hall  
+**Show hall:** http://localhost:8000/hall/{id}  
+**Edit hall:** http://localhost:8000/hall/{id}/edit  
 **Show piece in hall:** http://localhost:8000/hall/{hall_id}/piece/{piece_id}
 
 # Members:
