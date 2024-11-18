@@ -45,7 +45,7 @@ final class HallController extends AbstractController
             ($this->getUser() == $member);
 
         if (! $hasAccess) {
-            throw $this->createAccessDeniedException("You cannot access another member's arsenal!");
+            throw $this->createAccessDeniedException("You cannot create halls for other members!");
         }
         $hall = new Hall();
         $hall->setMember($member); // Set the Member
@@ -93,7 +93,7 @@ final class HallController extends AbstractController
             ($this->getUser() == $hall->getMember());
 
         if (! $hasAccess) {
-            throw $this->createAccessDeniedException("You cannot access another member's arsenal!");
+            throw $this->createAccessDeniedException("You cannot edit other members' halls!");
         }
         $form = $this->createForm(HallType::class, $hall);
         $form->handleRequest($request);
@@ -133,13 +133,14 @@ final class HallController extends AbstractController
         #[MapEntity(id: 'piece_id')]
         Piece $piece
     ): Response {
+        if (! $hall->isPublished()) {
+            throw $this->createAccessDeniedException("This hall is private!");
+        }
         if (! $hall->getPieces()->contains($piece)) {
             throw $this->createNotFoundException("Couldn't find such a piece in this hall!");
         }
 
-        if (! $hall->isPublished()) {
-            throw $this->createAccessDeniedException("Thou shall not access this fine piece!");
-        }
+
 
         return $this->render('hall/pieceshow.html.twig', [
             'piece' => $piece,

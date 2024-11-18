@@ -14,6 +14,12 @@
 		{
 			color: #0056b3; /* Darker primary color for hover */
 		}
+
+		.btn[disabled]
+		{
+			pointer-events: none;
+			opacity: 0.6;
+		}
 	</style>
 
 	<h1 class="my-5 text-center">Hall Details</h1>
@@ -59,9 +65,15 @@
 		</div>
 
 		<div class="d-flex gap-3 justify-content-start">
-			<a href="{{ path('app_hall_index') }}" class="btn btn-secondary">To Hall List</a>
-			<a href="{{ path('app_hall_edit', {'id': hall.id}) }}" class="btn btn-primary">Edit</a>
-			{{ include('hall/_delete_form.html.twig', { 'class': 'btn btn-danger' }) }}
+			<a href="{{ path('app_hall_index') }}" class="btn btn-secondary">Halls List</a>
+
+			{% if is_granted('ROLE_ADMIN') or hall.member == app.user %}
+				<a href="{{ path('app_hall_edit', {'id': hall.id}) }}" class="btn btn-primary">Edit</a>
+				{{ include('hall/_delete_form.html.twig', { 'class': 'btn btn-danger' }) }}
+			{% else %}
+				<button class="btn btn-primary" disabled>Edit</button>
+				<button class="btn btn-danger" disabled>Delete</button>
+			{% endif %}
 		</div>
 	</div>
 {% endblock %}
