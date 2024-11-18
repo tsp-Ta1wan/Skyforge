@@ -1,37 +1,87 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hall index{% endblock %}
+{% block title %}Hall List
+{% endblock %}
 
 {% block main %}
-    <h1>Hall index</h1>
+	<style>
+		table
+		{
+			max-width: 80vw;
+			margin: 5vh 0 0 5vw;
+			font-size: 1.2rem;
+			text-align: start;
+		}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Description</th>
-                <th>published</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for hall in halls %}
-            <tr>
-                <td>{{ hall.id }}</td>
-                <td>{{ hall.description }}</td>
-                <td>{{ hall.published ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('app_hall_show', {'id': hall.id}) }}">show</a>
-                    
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+		td,
+		th
+		{
+			height: 4vh;
+			padding: 0 0 0 3vw !important;
+			vertical-align: middle;
+		}
 
-   
+		thead th
+		{
+			padding: 0 0 1vh 3vw !important;
+		}
+
+		table a
+		{
+			text-decoration: none;
+			color: inherit;
+			display: block;
+			width: 80%;
+			height: 80%;
+			padding: 1.5vh 0;
+		}
+
+		a:hover
+		{
+			color: black;
+		}
+
+
+		.btn
+		{
+			padding: 5px 10px;
+		}
+	</style>
+
+	<h1 style="margin:15vh 0 0 5vw">Hall List</h1>
+
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th scope="col">Id</th>
+				<th scope="col">Description</th>
+				<th scope="col">Published</th>
+				<th scope="col">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for hall in halls %}
+				<tr>
+					<th scope="row">
+						<a href="{{ path('app_hall_show', {'id': hall.id}) }}">
+							{{ hall.id }}
+						</a>
+					</th>
+					<td>
+						<a href="{{ path('app_hall_show', {'id': hall.id}) }}">
+							{{ hall.description }}
+						</a>
+					</td>
+					<td>{{ hall.published ? 'Yes' : 'No' }}</td>
+					<td>
+						<a href="{{ path('app_hall_show', {'id': hall.id}) }}" class="btn btn-dark btn-sm">Show</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="4" class="text-center">No records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 {% endblock %}

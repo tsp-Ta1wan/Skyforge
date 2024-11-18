@@ -5,6 +5,10 @@ bootstrap_menu:
         home:
           label: 'Home'
           route: 'app_home'
+        pieces: 
+          label: 'Pieces'
+          route: 'app_piece_index'
+          roles: [ 'ROLE_ADMIN' ] 
         arsenals:
           label: 'Arsenals'
           route: 'app_arsenal_list'

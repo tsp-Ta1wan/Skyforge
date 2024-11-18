@@ -1,45 +1,67 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hall{% endblock %}
+{% block title %}Hall
+{% endblock %}
 
 {% block main %}
-    <h1>Hall</h1>
+	<style>
+		.piece-link
+		{
+			text-decoration: none;
+			color: #007bff; /* Bootstrap primary link color */
+		}
+		.piece-link:hover
+		{
+			color: #0056b3; /* Darker primary color for hover */
+		}
+	</style>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ hall.id }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ hall.description }}</td>
-            </tr>
-            <tr>
-                <th>Published</th>
-                <td>{{ hall.published ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-    <th>Pieces</th>
-    <td>
-        
-          {% for piece in hall.pieces %}
-        <div>
-        <a href="{{ path('app_hall_piece_show',{
-                         'hall_id': hall.id,
-                         'piece_id' : piece.id
-                       }) }}">{{ piece.name}}</a>
-        </div>
-          {% endfor %}
-        </ul>
-    </td>
-</tr>
-        </tbody>
-    </table>
+	<h1 class="my-5 text-center">Hall Details</h1>
 
-    <a href="{{ path('app_hall_index') }}">back to list</a>
+	<div class="container">
+		<div class="card shadow-sm mb-5">
+			<div class="card-body">
+				<table class="table table-striped">
+					<tbody>
+						<tr>
+							<th scope="row">Id</th>
+							<td>{{ hall.id }}</td>
+						</tr>
+						<tr>
+							<th scope="row">Description</th>
+							<td>{{ hall.description }}</td>
+						</tr>
+						<tr>
+							<th scope="row">Published</th>
+							<td>{{ hall.published ? 'Yes' : 'No' }}</td>
+						</tr>
+						<tr>
+							<th scope="row">Pieces</th>
+							<td>
+								{% if hall.pieces|length > 0 %}
+									<ul class="list-unstyled">
+										{% for piece in hall.pieces %}
+											<li>
+												<a class="piece-link" href="{{ path('app_hall_piece_show',{ 'hall_id': hall.id, 'piece_id': piece.id }) }}">
+													{{ piece.name }}
+												</a>
+											</li>
+										{% endfor %}
+									</ul>
+								{% else %}
+									<span class="text-muted">No pieces available</span>
+								{% endif %}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 
-    <a href="{{ path('app_hall_edit', {'id': hall.id}) }}">edit</a>
-
-    {{ include('hall/_delete_form.html.twig') }}
+		<div class="d-flex gap-3 justify-content-start">
+			<a href="{{ path('app_hall_index') }}" class="btn btn-secondary">To Hall List</a>
+			<a href="{{ path('app_hall_edit', {'id': hall.id}) }}" class="btn btn-primary">Edit</a>
+			{{ include('hall/_delete_form.html.twig', { 'class': 'btn btn-danger' }) }}
+		</div>
+	</div>
 {% endblock %}

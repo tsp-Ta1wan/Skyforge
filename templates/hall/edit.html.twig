@@ -1,13 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Hall{% endblock %}
+{% block title %}Edit Hall
+{% endblock %}
 
 {% block main %}
-    <h1>Edit Hall</h1>
+	<h1 class="ms-5">Edit Hall</h1>
 
-    {{ include('hall/_form.html.twig', {'button_label': 'Update'}) }}
+	{{ include('hall/_form.html.twig', {'button_label': 'Update'}) }}
+	<div class="mt-2 " style="margin-left: 17vh">
+		{{ include('hall/_delete_form.html.twig') }}
+	</div>
 
-    <a href="{{ path('app_hall_index') }}">back to list</a>
 
-    {{ include('hall/_delete_form.html.twig') }}
 {% endblock %}

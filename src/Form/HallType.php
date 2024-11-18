@@ -14,14 +14,14 @@ class HallType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // Get the current Hall object from the 'data' option
+
         $hall = $options['data'] ?? null;
 
         if (!$hall || !$hall->getMember()) {
             throw new \LogicException('Hall or its creator is not set. Ensure you pass the proper data to the form.');
         }
 
-        // Get the creator (Member) of the hall
+
         $member = $hall->getMember();
 
         $builder
@@ -39,10 +39,10 @@ class HallType extends AbstractType
                         ->andWhere('m.id = :memberId')
                         ->setParameter('memberId', $member->getId());
                 },
-                'choice_label' => 'description', // Adjust to show a meaningful label
+                'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => true,
-                'by_reference' => false, // Needed for ManyToMany relationships
+                'by_reference' => false,
             ]);
     }
 
