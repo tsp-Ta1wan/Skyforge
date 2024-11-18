@@ -1,4 +1,5 @@
-## Bonjour! Consultez le [Github](https://github.com/tsp-Ta1wan/Skyforge) pour une version meilleure du README.
+## Bonjour! Consultez le [Github](https://github.com/tsp-Ta1wan/Skyforge) pour une version meilleure du README.  
+## Vous pouvez lancer symfony http://localhost:8000/ (selon votre port) et le login doit apparaitre.
 
 ## Informations générales
 **Etudiant**: Louay Belkhamsa
