@@ -159,7 +159,7 @@ class AppFixtures extends Fixture
         yield ['thor.odinsson@example.com', 'vikingpass', self::THOR_ODINSSON_1, self::THOR_ARS_1, ['ROLE_USER']];
         yield ['valhalla@example.com', 'shieldpass', self::ELF_GUY_1, self::ELF_ARS_1, ['ROLE_USER']];
         yield ['blademaster@example.com', 'bladepass', self::BLADE_MASTER_1, self::BLADE_ARS_1, ['ROLE_USER']];
-        yield ['mythiccwarrior@example.com', 'mythicpass', self::MYTHICC_OLIVE_1, self::MYTHICC_ARS_1, ['ROLE_USER']];
+        yield ['admin@admin.com', 'admin', self::MYTHICC_OLIVE_1, self::MYTHICC_ARS_1, ['ROLE_ADMIN']];
         yield ['noobmaster69@gmail.com', 'thorisnoob', self::NOOB_MASTER_1, self::NOOB_ARS_1, ['ROLE_ADMIN']];
     }
     private function ArsenalsGenerator()
