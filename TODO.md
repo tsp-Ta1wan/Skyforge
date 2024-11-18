@@ -3,8 +3,8 @@
 | N° étape | Tâche à faire | Statut | Séance de début prévisionnel | État |
 |----------|---------------|--------|------------------------------|------|
 | 1        | Prise de connaissance du cahier des charges | OBLIGATOIRE | TP 3 | DONE     |
-| 2        | Initialisation du projet Symfony | OBLIGATOIRE | TP 3 |      |
-| 3        | Gestion du code source avec Git | RECOMMANDÉ |  |      |
+| 2        | Initialisation du projet Symfony | OBLIGATOIRE | TP 3 | DONE     |
+| 3        | Gestion du code source avec Git | RECOMMANDÉ |  | DONE     |
 | 4        | Ajout au modèle des données des entités liées [inventaire] et [objet] minimales | OBLIGATOIRE | TP 3 | DONE     |
 | 4.1      | - Entité [inventaire] | '' | '' | DONE     |
 | 4.2      | - Entité [objet] | '' | '' |  DONE    |
@@ -34,9 +34,9 @@
 | 17       | Ajout de la gestion de la mise en ligne d'images pour des photos dans les [objet] | OBLIGATOIRE | TP 8 |  DONE    |
 | 18       | Ajout de l'authentification | OBLIGATOIRE | TP 8 | DONE     |
 | 19       | Affichage des seules galeries publiques | OBLIGATOIRE | | DONE     |
-| 20       | Contextualisation de la création d'une [galerie] en fonction du membre | OPTIONNEL | |      |
+| 20       | Contextualisation de la création d'une [galerie] en fonction du membre | OPTIONNEL | | DONE     |
 | 21       | Contextualisation de l'ajout d'un [objet] à une [galerie] | OPTIONNEL | |      |
 | 22       | Utilisation des messages flash pour les CRUDs | OPTIONNEL | |      |
 | 23       | Ajout d'une gestion de marque-pages/panier dans le front-office | OPTIONNEL | TP 8 |      |
-| 24       | Protection de l'accès aux données à leurs seuls propriétaires | OPTIONNEL | TP 8 |      |
-| 25       | Contextualisation du chargement des données en fonction de l'utilisateur connecté | OPTIONNEL | |      |
+| 24       | Protection de l'accès aux données à leurs seuls propriétaires | OPTIONNEL | TP 8 | DONE     |
+| 25       | Contextualisation du chargement des données en fonction de l'utilisateur connecté | OPTIONNEL | | DONE     |

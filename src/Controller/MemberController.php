@@ -8,7 +8,8 @@ use App\Repository\MemberRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Psr\Log\LoggerInterface;
+
+
 
 #[Route('/member')]
 class MemberController extends AbstractController
@@ -31,12 +32,12 @@ class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/profile-redirect', name: 'app_member_redirect', methods: ['GET'])]
+    #[Route('/redirect/member-redirect', name: 'app_member_redirect', methods: ['GET'])]
     public function memberRedirect(): Response
     {
 
         $user = $this->getUser();
-
+        dump($user);
         if (!$user instanceof Member) {
             throw $this->createAccessDeniedException('Access denied.');
         }

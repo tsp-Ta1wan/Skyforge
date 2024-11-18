@@ -8,6 +8,7 @@ bootstrap_menu:
         arsenals:
           label: 'Arsenals'
           route: 'app_arsenal_list'
+          roles: [ 'ROLE_ADMIN' ]  
         halls:
           label: 'Halls'
           route: 'app_hall_index'

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Piece;
 use App\Entity\Arsenal;
+use App\Entity\Member;
 use App\Form\PieceType;
 use App\Repository\PieceRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,9 +17,12 @@ use Symfony\Component\Routing\Attribute\Route;
 final class PieceController extends AbstractController
 {
 
+
     #[Route('/home', name: 'app_home', methods: ['GET'])]
     public function home(PieceRepository $pieceRepository): Response
     {
+
+
         if ($this->isGranted('ROLE_ADMIN')) {
             $pieces = $pieceRepository->findAll();
         } else {
