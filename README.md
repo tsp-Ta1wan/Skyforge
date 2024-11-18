@@ -1,4 +1,4 @@
-**Bonjour! Consultez le [Github](https://github.com/tsp-Ta1wan/Skyforge) pour une version meilleure du README.**
+## Bonjour! Consultez le [Github](https://github.com/tsp-Ta1wan/Skyforge) pour une version meilleure du README.
 
 ## Informations générales
 **Etudiant**: Louay Belkhamsa
@@ -47,6 +47,6 @@ Member = member
 **Show piece in hall:** http://localhost:8000/hall/{hall_id}/piece/{piece_id}
 
 # Members:
-**Members list:** http://localhost:8000/member
+**Members list:** http://localhost:8000/member  
 **Show member:** http://localhost:8000/member/{id}
 
