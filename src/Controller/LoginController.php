@@ -13,6 +13,12 @@ use App\Entity\Member;
 
 class LoginController extends AbstractController
 {
+    #[Route('/', name: 'app_init')]
+    public function init(): Response
+    {
+        return $this->redirectToRoute('app_login');
+    }
+
     #[Route('/login', name: 'app_login')]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
@@ -48,8 +54,7 @@ class LoginController extends AbstractController
     public function logout()
     {
 
-        dump("logout");
-        // throw new \Exception('Don\'t forget to activate logout in security.yaml');
+
         return new Response();
     }
 }
