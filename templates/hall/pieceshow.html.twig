@@ -1,82 +1,72 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Piece: {{ piece.name }}{% endblock %}
-
-{% block main %}
-<style>
-	table {
-		max-width: 80vw;
-		margin: 5vh 0 0 5vw;
-		font-size:1.2rem;	
-		text-align:start;
-	}
-	
-	td,th {
-	height: 8vh;
-	padding:2vh 0 0 3vw !important;
-	
-	}
-	thead th{
-		padding: 0 0 1vh 3vw!important;
-	
-	}
-	
-    /*this applies only to the table not the nav*/
-    button a {
-        text-decoration: none;
-        color: inherit;
-        display: block; 
-        width: 100%;
-        height: 100%;
-        padding: 2vh 0 2vh 0;
-    }
-    
-    table a:hover{
-    	color:black;
-    }
-    button a:hover{
-    	color:white;
-    }
-</style>
-<h1 style="margin:15vh 0 0 5vw">Piece: {{ piece.name }}</h1>
-<h4 style="margin:2vh 0 5vh 5vw">Arsenal: {{ piece.arsenal.description }}</h4>
-
-
-<table class="table ">
-  <thead>
-    <tr>
-      <th scope="col">Property</th>
-      <th scope="col">Details</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">Name</th>
-      <td>{{ piece.name }}</td>
-    </tr>
-    <tr>
-      <th scope="row">Description</th>
-      <td>{{ piece.description }}</td>
-    </tr>
-    <tr>
-      <th scope="row">Type</th>
-      <td>{{ piece.type }}</td>
-    </tr>
-    <tr>
-      <th scope="row">Era</th>
-      <td>{{ piece.era }}</td>
-    </tr>
-    <tr>
-      <th scope="row">Date Acquired</th>
-      <td>{{ piece.acquired ? piece.acquired|date('Y-m-d') : '' }}</td>
-    </tr>
-  </tbody>
-</table>
-
-<a href="{{ path('app_hall_show', { 'id': hall.id}) }}">back to hall</a>
-<button type="button" class="btn btn-dark" style="margin:5vh 0 0 5vw"><a href="{{ path('arsenal_show', {'id': piece.arsenal.id}) }}">Back to Arsenal</a></button>
-
-
-
+{% block title %}Piece
 {% endblock %}
 
+{% block main %}
+	<div class="container my-5">
+		<h1 class="mb-4">{{ piece.name }}</h1>
+
+		<div class="card shadow-sm mb-4">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-4">
+						<img class="img-fluid rounded mb-3" src="{{ vich_uploader_asset(piece, 'imageFile') }}" alt="{{ piece.name }}">
+					</div>
+					<div class="col-md-8">
+						<table class="table table-striped">
+							<tbody>
+								<tr>
+									<th scope="row">Id</th>
+									<td>{{ piece.id }}</td>
+								</tr>
+								<tr>
+									<th scope="row">Name</th>
+									<td>{{ piece.name }}</td>
+								</tr>
+								<tr>
+									<th scope="row">Description</th>
+									<td>{{ piece.description }}</td>
+								</tr>
+								<tr>
+									<th scope="row">Type</th>
+									<td>{{ piece.type }}</td>
+								</tr>
+								<tr>
+									<th scope="row">Acquired</th>
+									<td>{{ piece.acquired ? piece.acquired|date('Y-m-d') : 'N/A' }}</td>
+								</tr>
+								<tr>
+									<th scope="row">Era</th>
+									<td>{{ piece.era }}</td>
+								</tr>
+								<tr>
+									<th scope="row">Halls</th>
+									<td>
+										{% for hall in piece.halls %}
+											<span class="badge bg-secondary">{{ hall.description }}</span>
+										{% else %}
+											<span class="text-muted">No halls assigned</span>
+										{% endfor %}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="d-flex gap-3">
+			<a href="{{ path('app_piece_index') }}" class="btn btn-outline-dark">Go to All Pieces</a>
+
+			{% if is_granted('ROLE_ADMIN') or piece.arsenal.member == app.user %}
+				<a href="{{ path('app_piece_edit', {'id': piece.id}) }}" class="btn btn-primary">Edit</a>
+				{{ include('piece/_delete_form.html.twig', { 'class': 'btn btn-danger' }) }}
+			{% else %}
+				<button class="btn btn-primary" disabled>Edit</button>
+				<button class="btn btn-danger" disabled>Delete</button>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}

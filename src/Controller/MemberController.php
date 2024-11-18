@@ -17,6 +17,9 @@ class MemberController extends AbstractController
     #[Route('/', name: 'app_member_list')]
     public function index(MemberRepository $memberRepository): Response
     {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('app_login');
+        }
         $members = $memberRepository->findAll();
 
         return $this->render('member/index.html.twig', [
@@ -35,6 +38,7 @@ class MemberController extends AbstractController
     #[Route('/redirect/member-redirect', name: 'app_member_redirect', methods: ['GET'])]
     public function memberRedirect(): Response
     {
+
 
         $user = $this->getUser();
         dump($user);

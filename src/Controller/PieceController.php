@@ -21,7 +21,7 @@ final class PieceController extends AbstractController
     #[Route('/home', name: 'app_home', methods: ['GET'])]
     public function home(PieceRepository $pieceRepository): Response
     {
-
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         if ($this->isGranted('ROLE_ADMIN')) {
             $pieces = $pieceRepository->findAll();
@@ -37,6 +37,8 @@ final class PieceController extends AbstractController
     #[Route('/piece', name: 'app_piece_index', methods: ['GET'])]
     public function index(PieceRepository $pieceRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         if ($this->isGranted('ROLE_ADMIN')) {
             $pieces = $pieceRepository->findAll();
         } else {
@@ -52,6 +54,7 @@ final class PieceController extends AbstractController
     #[Route('/piece/new/{id}', name: 'app_piece_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, Arsenal $arsenal): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $hasAccess = $this->isGranted('ROLE_ADMIN') || ($this->getUser() == $arsenal->getMember());
 
         if (! $hasAccess) {
@@ -87,6 +90,7 @@ final class PieceController extends AbstractController
     #[Route('/piece/{id}', name: 'app_piece_show', methods: ['GET'])]
     public function show(Piece $piece): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $published = false;
         $halls = $piece->getHalls();
         foreach ($halls as $hall) {
@@ -109,6 +113,7 @@ final class PieceController extends AbstractController
     #[Route('/piece/{id}/edit', name: 'app_piece_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Piece $piece, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $form = $this->createForm(PieceType::class, $piece);
         $form->handleRequest($request);
 
@@ -127,6 +132,7 @@ final class PieceController extends AbstractController
     #[Route('/piece/{id}', name: 'app_piece_delete', methods: ['POST'])]
     public function delete(Request $request, Piece $piece, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if ($this->isCsrfTokenValid('delete' . $piece->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($piece);
             $entityManager->flush();

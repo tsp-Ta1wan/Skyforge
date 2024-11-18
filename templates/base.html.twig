@@ -36,11 +36,10 @@
 								{{ render_bootstrap_menu('anonymousaccount') }}
 							{% endif %}
 
-							{% if 'ROLE_ADMIN' in app.user.roles %}
-								<span class="navbar-text" style="color: red">
-									Admin
-								</span>
+							{% if app.user and 'ROLE_ADMIN' in app.user.roles %}
+								<span class="navbar-text" style="color: red">Admin</span>
 							{% endif %}
+
 						</ul>
 					</div>
 
