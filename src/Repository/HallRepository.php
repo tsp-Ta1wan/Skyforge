@@ -25,4 +25,9 @@ class HallRepository extends ServiceEntityRepository
     {
         return $this->findBy(['published' => true]);
     }
+
+    public function findUnpublished(): array
+    {
+        return $this->findBy(['published' => false]);
+    }
 }

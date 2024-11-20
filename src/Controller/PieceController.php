@@ -90,6 +90,8 @@ final class PieceController extends AbstractController
     #[Route('/piece/{id}', name: 'app_piece_show', methods: ['GET'])]
     public function show(Piece $piece): Response
     {
+        dump($piece->getImageFile());
+        dump($piece->getImageName());
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $published = false;
         $halls = $piece->getHalls();
@@ -122,7 +124,7 @@ final class PieceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('arsenal_show', ['id' => $piece->getArsenal()->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_arsenal_show', ['id' => $piece->getArsenal()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('piece/edit.html.twig', [

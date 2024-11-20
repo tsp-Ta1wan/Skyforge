@@ -35,7 +35,7 @@ class Piece
     #[ORM\Column(length: 255)]
     private ?string $era = null;
 
-    #[Vich\UploadableField(mapping: 'pastes', fileNameProperty: 'imageName', size: 'imageSize')]
+    #[Vich\UploadableField(mapping: 'pieces', fileNameProperty: 'imageName', size: 'imageSize')]
     private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
@@ -47,11 +47,14 @@ class Piece
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $role = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
+
     #[ORM\ManyToOne(inversedBy: 'Pieces')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Arsenal $arsenal = null;
 
-    
+
     /**
      * @var Collection<int, Hall>
      */
@@ -63,7 +66,7 @@ class Piece
         $this->halls = new ArrayCollection();
     }
 
-    
+
 
     public function getId(): ?int
     {
@@ -205,7 +208,7 @@ class Piece
         return $this->imageSize;
     }
 
-   
+
     public function getRole(): ?string
     {
         return $this->role;
@@ -214,6 +217,18 @@ class Piece
     public function setRole(?string $role): static
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

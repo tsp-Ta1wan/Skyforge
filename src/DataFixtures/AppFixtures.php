@@ -115,6 +115,8 @@ class AppFixtures extends Fixture
 
     private function loadPieces(ObjectManager $manager)
     {
+        $fixturesDir = __DIR__ . '/../../public/images/fixtures/pieces';
+        $uploadDir = __DIR__ . '/../../public/images/pieces';
         foreach (self::PiecesGenerator() as [$name, $description, $type, $acquired, $era, $arsenalReference, $imageName]) {
             $arsenal = $this->getReference($arsenalReference);
 
@@ -126,20 +128,27 @@ class AppFixtures extends Fixture
                 ->setEra($era)
                 ->setArsenal($arsenal);
 
-            // Set the image file
-            $imagePath = __DIR__ . '/../../public/images/pieces/' . $imageName;
-            if (file_exists($imagePath)) {
 
-                $piece->setImageName($imageName);
-            } else {
-                throw new \Exception("Image file not found: $imagePath");
+            $sourcePath = $fixturesDir . '/' . $imageName;
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
             }
+            $destinationPath = $uploadDir . '/' . $imageName;
+
+            if (!copy($sourcePath, $destinationPath)) {
+                throw new \Exception("Failed to copy image from source dir $sourcePath to uploads directory: $destinationPath");
+            }
+
+            $piece->setImageName($imageName);
+
 
             $manager->persist($piece);
         }
 
         $manager->flush();
     }
+
+
 
     private function HallsGenerator(): \Generator
     {
